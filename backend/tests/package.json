@@ -1,0 +1,22 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "Tests pour le projet Amis Solidaires",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive --reporter spec",
+    "test:watch": "mocha --recursive --reporter spec --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "sinon": "^15.0.1",
+    "supertest": "^6.3.3",
+    "mongodb-memory-server": "^8.11.4"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.1"
+  }
+}
