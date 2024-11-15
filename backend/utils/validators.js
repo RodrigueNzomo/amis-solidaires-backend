@@ -21,12 +21,13 @@ const isValidNumber = (fieldName) => {
     .withMessage(`${fieldName} doit être supérieur ou égal à zéro.`);
 };
 
-// **Validation des données utilisateur**
+// Validation générique pour l'email
 const validateEmail = body("email")
   .isEmail()
   .withMessage("L'email fourni est invalide.")
   .normalizeEmail();
 
+// Validation générique pour le mot de passe
 const validatePassword = body("password")
   .isLength({ min: 6 })
   .withMessage("Le mot de passe doit comporter au moins 6 caractères.")
@@ -54,7 +55,6 @@ const validateAideData = [
     .optional()
     .isLength({ max: 500 })
     .withMessage("La description ne peut pas dépasser 500 caractères."),
-  handleValidationErrors, // Appliquer la gestion des erreurs ici
 ];
 
 // **Validation pour la Cotisation**
@@ -65,7 +65,6 @@ const validateCotisationData = [
     .withMessage("La date de la cotisation doit être une date valide.")
     .notEmpty()
     .withMessage("La date de la cotisation est obligatoire."),
-  handleValidationErrors,
 ];
 
 // **Validation pour le Membre**
@@ -81,7 +80,6 @@ const validateMembreData = [
     .withMessage("La date de naissance doit être valide.")
     .notEmpty()
     .withMessage("La date de naissance est requise."),
-  handleValidationErrors,
 ];
 
 // **Validation pour le Paiement**
@@ -92,7 +90,6 @@ const validatePaymentData = [
     .withMessage("La date de paiement doit être une date valide.")
     .notEmpty()
     .withMessage("La date du paiement est requise."),
-  handleValidationErrors,
 ];
 
 // **Validation pour un ID générique (utilisé dans plusieurs routes)**
@@ -102,7 +99,6 @@ const validateIdParam = [
     .withMessage("L'ID fourni est invalide.")
     .notEmpty()
     .withMessage("L'ID est requis."),
-  handleValidationErrors,
 ];
 
 export {

@@ -2,8 +2,7 @@
 
 import mongoose from "mongoose"; // Importation par défaut de mongoose
 const { Schema } = mongoose;
-import _default from "../utils/validators.js";
-const { validateCotisationData } = _default; // Import de la validation pour la cotisation
+import { validateCotisationData } from "../utils/validators.js"; // Import correct de la validation pour la cotisation
 
 // Schéma de la cotisation
 const CotisationSchema = new Schema(
@@ -37,10 +36,9 @@ CotisationSchema.statics.findByMembre = function (membreId) {
 };
 
 // Middleware Mongoose avant sauvegarde pour valider les données
-CotisationSchema.pre("save", function (next) {
+CotisationSchema.pre("save", async function (next) {
   try {
-    // Appliquer la validation des données avant de continuer avec la sauvegarde
-    validateCotisationData(this);
+    await validateCotisationData(this); // Appliquer la validation des données avant de continuer avec la sauvegarde
     next();
   } catch (err) {
     next(err); // Si la validation échoue, arrêter la sauvegarde et renvoyer l'erreur
