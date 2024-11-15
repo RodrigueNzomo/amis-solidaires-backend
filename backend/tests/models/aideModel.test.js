@@ -2,7 +2,7 @@
 import chai from "chai";
 import { stub } from "sinon";
 const { expect } = chai;
-import Aide, { prototype } from "../../backend/models/Aide";
+import Aide, { prototype } from "../../backend/models/Aide.js";
 import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB"; // Importation de la config DB
 
 describe("Aide Model", () => {

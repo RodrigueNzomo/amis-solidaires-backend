@@ -4,7 +4,7 @@ import Pret, {
   find,
   findByIdAndUpdate,
   findByIdAndDelete,
-} from "../models/Pret"; // Assurez-vous que le modèle est bien importé
+} from "../models/Pret.js"; // Assurez-vous que le modèle est bien importé
 
 // Ajouter un nouveau prêt
 const ajouterPret = async (req, res) => {

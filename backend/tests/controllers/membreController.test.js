@@ -3,8 +3,8 @@ import chai from "chai";
 import { stub } from "sinon";
 import request from "supertest";
 const { expect } = chai;
-import app from "../../backend/app"; // Assure-toi que ce chemin est correct
-import Membre, { prototype } from "../../backend/models/Membre";
+import app from "../../backend/app.js"; // Assure-toi que ce chemin est correct
+import Membre, { prototype } from "../../backend/models/Membre.js";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 

@@ -3,8 +3,8 @@ import chai from "chai";
 import { stub } from "sinon";
 import request from "supertest";
 const { expect } = chai;
-import app from "../../backend/app";
-import Cotisation, { prototype } from "../../backend/models/Cotisation";
+import app from "../../backend/app.js";
+import Cotisation, { prototype } from "../../backend/models/Cotisation.js";
 
 describe("Cotisation Routes", () => {
   describe("POST /api/cotisations", () => {

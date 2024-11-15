@@ -1,7 +1,7 @@
 // backend/services/paymentService.js
 
 import Payment from "../models/Payment"; // Exemple de modèle de paiement
-import { sendNotification } from "./notificationService"; // Notification service pour notifier après paiement
+import { sendNotification } from "./notificationService.js"; // Notification service pour notifier après paiement
 
 // Fonction pour traiter un paiement
 const processPayment = async (userId, amount) => {

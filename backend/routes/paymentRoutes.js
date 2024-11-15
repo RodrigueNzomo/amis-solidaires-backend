@@ -6,8 +6,8 @@ import {
   getPayments,
   modifierPaiement,
   supprimerPaiement,
-} from "../controllers/paymentController";
-import authMiddleware from "../middleware/authMiddleware";
+} from "../controllers/paymentController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 // Remplacer l'importation par celle-ci, sans 'default'
 // import {
 //   validateMembreData,
@@ -18,7 +18,7 @@ import authMiddleware from "../middleware/authMiddleware";
 // } from "../utils/validators.js";
 
 import { validatePaymentData } from "../utils/validators.js"; // Import de la validation des données pour les paiements
-import { handleValidationErrors } from "../middleware/errorHandler"; // Import pour la gestion des erreurs de validation
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import pour la gestion des erreurs de validation
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import { findById } from "../models/Membre";
+import { findById } from "../models/Membre.js";
 
 const checkRole = (roles) => {
   return async (req, res, next) => {

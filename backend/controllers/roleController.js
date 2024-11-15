@@ -1,5 +1,5 @@
 // backend/controllers/roleController.js
-import { findById, find } from "../models/Membre";
+import { findById, find } from "../models/Membre.js";
 
 // Méthode pour assigner un rôle à un membre
 const assignRole = async (membreId, role) => {

@@ -3,7 +3,7 @@
 import request from "supertest";
 import app from "../app"; // Importer l'application Express
 import { connect, connection } from "mongoose";
-import { create } from "../models/User"; // Modèle de l'utilisateur
+import { create } from "../models/User.js"; // Modèle de l'utilisateur
 
 // Créer un utilisateur pour les tests
 const userData = {

@@ -1,6 +1,6 @@
 import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-import { validatePretData } from "../utils/validators"; // Import de la validation des données pour les prêts
+import { validatePretData } from "../utils/validators.js"; // Import de la validation des données pour les prêts
 
 // Schéma du prêt
 const PretSchema = new Schema(

@@ -1,6 +1,6 @@
 // backend/config/db.js
 import { connect } from "mongoose";
-import { mongoURI } from "./config"; // Importation correcte de la config.js
+import { mongoURI } from "./config.js"; // Importation correcte de la config.js
 
 const connectDB = async () => {
   try {

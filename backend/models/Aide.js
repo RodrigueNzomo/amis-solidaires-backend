@@ -1,6 +1,6 @@
 import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-import _default from "../utils/validators";
+import _default from "../utils/validators.js";
 const { validateAideData } = _default; // Importer la fonction de validation externe
 
 // Schéma de l'Aide

@@ -1,8 +1,7 @@
 import mongoose, { model } from "mongoose";
 import { compare, genSalt, hash } from "bcryptjs";
 const { Schema } = mongoose;
-import default from "../utils/validators";
-const { validateUserData } = default; // Import de la validation des données utilisateur
+import { validateUserData } from "../utils/validators.js"; // Importation correcte de la fonction de validation
 
 // Schéma de l'utilisateur
 const userSchema = new Schema(
@@ -28,15 +27,15 @@ const userSchema = new Schema(
 );
 
 // Méthode pour vérifier le mot de passe
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await compare(enteredPassword, this.password);
+userSchema.methods.matchPassword = function (enteredPassword) {
+  return compare(enteredPassword, this.password); // Retour direct de la promesse
 };
 
 // Pré-enregistrement pour hasher le mot de passe avant la sauvegarde
 userSchema.pre("save", async function (next) {
   // Si le mot de passe n'est pas modifié, on passe à l'étape suivante
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
   // Génération du sel pour hasher le mot de passe
   const salt = await genSalt(10);

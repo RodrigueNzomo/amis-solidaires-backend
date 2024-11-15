@@ -1,7 +1,7 @@
 // backend/routes/aideRoutes.js
 
 import { Router } from "express";
-import authMiddleware from "../middleware/authMiddleware";
+import authMiddleware from "../middleware/authMiddleware.js";
 // Remplacer l'importation par celle-ci, sans 'default'
 // import {
 //   validateMembreData,
@@ -13,8 +13,8 @@ import authMiddleware from "../middleware/authMiddleware";
 
 import { validateAideDatData } from "../utils/validators.js";
 // Validation des données d'Aide
-import { handleValidationErrors } from "../middleware/errorHandler"; // Import de la gestion des erreurs de validation
-import { createAide, getAllAides } from "../controllers/aideController"; // Import du contrôleur pour Aide
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import de la gestion des erreurs de validation
+import { createAide, getAllAides } from "../controllers/aideController.js"; // Import du contrôleur pour Aide
 
 const router = Router();
 

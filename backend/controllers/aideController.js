@@ -1,6 +1,6 @@
 // backend/controllers/aideController.js
 
-import Aide, { find } from "../models/Aide";
+import Aide, { find } from "../models/Aide.js";
 
 // Créer une nouvelle aide
 const createAide = async (data) => {

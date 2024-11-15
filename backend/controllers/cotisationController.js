@@ -4,7 +4,7 @@ import Cotisation, {
   find,
   findByIdAndUpdate,
   findByIdAndDelete,
-} from "../models/Cotisation";
+} from "../models/Cotisation.js";
 
 // Ajouter une cotisation
 const ajouterCotisation = async (data) => {

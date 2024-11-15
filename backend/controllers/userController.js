@@ -1,5 +1,5 @@
 // backend/controllers/userController.js
-import { findById, find } from "../models/User";
+import { findById, find } from "../models/User.js";
 
 // Récupérer les détails d'un utilisateur
 const getUserDetails = async (req, res) => {

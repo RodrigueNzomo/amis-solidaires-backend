@@ -2,8 +2,8 @@
 const chai = require("chai");
 const sinon = require("sinon");
 const { expect } = chai;
-const paymentService = require("../../backend/services/paymentService");
-const notificationService = require("../../backend/services/notificationService");
+const paymentService = require("../../backend/services/paymentService.js");
+const notificationService = require("../../backend/services/notificationService.js");
 
 describe("Payment Service", () => {
   it("should process a payment and notify the user", async () => {

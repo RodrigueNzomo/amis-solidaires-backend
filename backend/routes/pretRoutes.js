@@ -6,10 +6,10 @@ import {
   getPrets,
   modifierPret,
   supprimerPret,
-} from "../controllers/pretController"; // Assurez-vous que le contrôleur est bien importé
-import authMiddleware from "../middleware/authMiddleware";
-import { validatePretData } from "../utils/validators"; // Assurez-vous que cette validation est correctement importée
-import { handleValidationErrors } from "../middleware/errorHandler"; // Assurez-vous que la gestion des erreurs est importée
+} from "../controllers/pretController.js"; // Assurez-vous que le contrôleur est bien importé
+import authMiddleware from "../middleware/authMiddleware.js";
+import { validatePretData } from "../utils/validators.js"; // Assurez-vous que cette validation est correctement importée
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Assurez-vous que la gestion des erreurs est importée
 
 const router = Router();
 

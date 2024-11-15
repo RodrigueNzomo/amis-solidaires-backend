@@ -3,9 +3,9 @@ import chai from "chai";
 import { stub } from "sinon";
 import request from "supertest";
 const { expect } = chai;
-import app from "../../backend/app"; // Si tu as un fichier app.js pour configurer express
-import Aide, { prototype } from "../../backend/models/Aide";
-import authMiddleware from "../../backend/middleware/authMiddleware";
+import app from "../../backend/app.js"; // Si tu as un fichier app.js pour configurer express
+import Aide, { prototype } from "../../backend/models/Aide.js";
+import authMiddleware from "../../backend/middleware/authMiddleware.js";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 

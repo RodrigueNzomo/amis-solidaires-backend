@@ -5,7 +5,7 @@ const sendNotification = async (to, subject, message) => {
   try {
     // Utilisation du service email pour envoyer une notification par email
     // On peut étendre ce service pour gérer d'autres types de notifications
-    const emailService = require("./emailService");
+    const emailService = require("./emailService.js");
     const text = `Notification: ${message}`;
     await emailService.sendEmail(to, subject, text);
     console.log(`Notification envoyée à ${to}`);

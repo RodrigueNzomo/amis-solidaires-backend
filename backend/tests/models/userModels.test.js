@@ -1,7 +1,7 @@
 import request from "supertest";
-import app from "../app"; // Assure-toi que le fichier app.js est correctement importé
+import app from "../app.js"; // Assure-toi que le fichier app.js est correctement importé
 import { connect, disconnect } from "mongoose";
-import User, { deleteMany } from "../models/User"; // Assure-toi que le chemin est correct
+import User, { deleteMany } from "../models/User.js"; // Assure-toi que le chemin est correct
 
 // Connecte-toi à la base de données avant chaque test
 beforeAll(async () => {

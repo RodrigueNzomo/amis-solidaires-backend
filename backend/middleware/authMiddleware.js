@@ -1,5 +1,5 @@
 import { verify } from "jsonwebtoken";
-import { JWT_SECRET } from "../config/config";
+import { JWT_SECRET } from "../config/config.js";
 
 // Fonction de vérification du token JWT
 const verifyToken = (token) => {

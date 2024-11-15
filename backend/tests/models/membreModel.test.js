@@ -2,7 +2,7 @@
 import chai from "chai";
 import { stub } from "sinon";
 const { expect } = chai;
-import Membre, { prototype } from "../../backend/models/Membre";
+import Membre, { prototype } from "../../backend/models/Membre.js";
 import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB";
 
 describe("Membre Model", () => {

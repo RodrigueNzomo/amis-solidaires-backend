@@ -1,6 +1,6 @@
 import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-import _default from "../utils/validators";
+import _default from "../utils/validators.js";
 const { validateMembreData } = _default; // Import de la validation des données pour les membres
 
 // Schéma du membre

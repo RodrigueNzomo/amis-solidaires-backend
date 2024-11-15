@@ -6,8 +6,8 @@ import {
   getCotisations,
   modifierCotisation,
   supprimerCotisation,
-} from "../controllers/cotisationController";
-import authMiddleware from "../middleware/authMiddleware";
+} from "../controllers/cotisationController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 // Remplacer l'importation par celle-ci, sans 'default'
 // import {
 //   validateMembreData,
@@ -19,7 +19,7 @@ import authMiddleware from "../middleware/authMiddleware";
 
 import { validateCotisationData } from "../utils/validators.js";
 
-import { handleValidationErrors } from "../middleware/errorHandler";
+import { handleValidationErrors } from "../middleware/errorHandler.js";
 
 const router = Router();
 

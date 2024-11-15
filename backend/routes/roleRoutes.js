@@ -1,6 +1,6 @@
 // backend/routes/roleRoutes.js
 import { Router } from "express";
-import checkRole from "../middleware/checkRole";
+import checkRole from "../middleware/checkRole.js";
 import {
   assignRole,
   getAllMembers,
@@ -8,7 +8,7 @@ import {
   getMemberRole,
   updateMemberRole,
   removeRoleFromMember,
-} from "../controllers/roleController";
+} from "../controllers/roleController.js";
 
 const router = Router();
 
