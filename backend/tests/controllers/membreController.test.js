@@ -1,10 +1,10 @@
 // tests/controllers/membreController.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app"); // Assure-toi que ce chemin est correct
-const Membre = require("../../backend/models/Membre");
+import app from "../../backend/app"; // Assure-toi que ce chemin est correct
+import Membre, { prototype } from "../../backend/models/Membre";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 
@@ -19,9 +19,7 @@ describe("Membre Controller", () => {
         telephone: "0123456789",
       };
 
-      const createMembreStub = sinon
-        .stub(Membre.prototype, "save")
-        .resolves(fakeMembre);
+      const createMembreStub = stub(prototype, "save").resolves(fakeMembre);
 
       const res = await request(app)
         .post("/api/membres/ajouter")
@@ -52,7 +50,7 @@ describe("Membre Controller", () => {
         { nom: "Jane", prenom: "Smith", email: "jane.smith@example.com" },
       ];
 
-      const findMembresStub = sinon.stub(Membre, "find").resolves(fakeMembres);
+      const findMembresStub = stub(Membre, "find").resolves(fakeMembres);
 
       const res = await request(app)
         .get("/api/membres")
@@ -73,9 +71,7 @@ describe("Membre Controller", () => {
         email: "john.doe@example.com",
       };
 
-      const findMembreStub = sinon
-        .stub(Membre, "findById")
-        .resolves(fakeMembre);
+      const findMembreStub = stub(Membre, "findById").resolves(fakeMembre);
 
       const res = await request(app)
         .get(`/api/membres/${userId}`)
@@ -88,7 +84,7 @@ describe("Membre Controller", () => {
     });
 
     it("should return 404 if membre not found", async () => {
-      const findMembreStub = sinon.stub(Membre, "findById").resolves(null);
+      const findMembreStub = stub(Membre, "findById").resolves(null);
 
       const res = await request(app)
         .get(`/api/membres/${userId}`)

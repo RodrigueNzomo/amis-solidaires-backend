@@ -1,12 +1,17 @@
 // backend/routes/pretRoutes.js
 
-const express = require("express");
-const pretController = require("../controllers/pretController"); // Assurez-vous que le contrôleur est bien importé
-const authMiddleware = require("../middleware/authMiddleware");
-const { validatePretData } = require("../utils/validators"); // Assurez-vous que cette validation est correctement importée
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Assurez-vous que la gestion des erreurs est importée
+import { Router } from "express";
+import {
+  ajouterPret,
+  getPrets,
+  modifierPret,
+  supprimerPret,
+} from "../controllers/pretController"; // Assurez-vous que le contrôleur est bien importé
+import authMiddleware from "../middleware/authMiddleware";
+import { validatePretData } from "../utils/validators"; // Assurez-vous que cette validation est correctement importée
+import { handleValidationErrors } from "../middleware/errorHandler"; // Assurez-vous que la gestion des erreurs est importée
 
-const router = express.Router();
+const router = Router();
 
 // Ajouter un prêt (route protégée par l'authentification et la validation des données)
 router.post(
@@ -17,7 +22,7 @@ router.post(
   async (req, res) => {
     try {
       // Ajouter un prêt en appelant le contrôleur
-      const pret = await pretController.ajouterPret(req, res); // Envoie des données du prêt
+      const pret = await ajouterPret(req, res); // Envoie des données du prêt
       res.status(201).json({ message: "Prêt ajouté avec succès", pret });
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -28,7 +33,7 @@ router.post(
 // Récupérer tous les prêts (route protégée par l'authentification)
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const prets = await pretController.getPrets(req, res);
+    const prets = await getPrets(req, res);
     if (!prets || prets.length === 0) {
       return res.status(404).json({ message: "Aucun prêt trouvé" });
     }
@@ -49,7 +54,7 @@ router.put(
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const pret = await pretController.modifierPret(req, res);
+      const pret = await modifierPret(req, res);
       if (!pret) {
         return res.status(404).json({ message: "Prêt non trouvé" });
       }
@@ -66,7 +71,7 @@ router.put(
 // Supprimer un prêt par ID (route protégée par l'authentification)
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const pret = await pretController.supprimerPret(req, res);
+    const pret = await supprimerPret(req, res);
     if (!pret) {
       return res.status(404).json({ message: "Prêt non trouvé" });
     }
@@ -79,4 +84,4 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

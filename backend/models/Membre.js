@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-const { validateMembreData } = require("../utils/validators"); // Import de la validation des données pour les membres
+import _default from "../utils/validators";
+const { validateMembreData } = _default; // Import de la validation des données pour les membres
 
 // Schéma du membre
 const MembreSchema = new Schema(
@@ -75,4 +76,4 @@ MembreSchema.pre("save", function (next) {
   }
 });
 
-module.exports = mongoose.model("Membre", MembreSchema);
+export default model("Membre", MembreSchema);

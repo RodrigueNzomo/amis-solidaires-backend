@@ -1,8 +1,16 @@
-const express = require("express");
-const checkRole = require("../middleware/checkRole");
-const roleController = require("../controllers/roleController");
+// backend/routes/roleRoutes.js
+import { Router } from "express";
+import checkRole from "../middleware/checkRole";
+import {
+  assignRole,
+  getAllMembers,
+  getMemberById,
+  getMemberRole,
+  updateMemberRole,
+  removeRoleFromMember,
+} from "../controllers/roleController";
 
-const router = express.Router();
+const router = Router();
 
 // Route pour l'ajout d'un rôle spécifique (uniquement par Président)
 router.put("/assigner/:id", checkRole(["President"]), async (req, res) => {
@@ -25,7 +33,7 @@ router.put("/assigner/:id", checkRole(["President"]), async (req, res) => {
     }
 
     // Appel du contrôleur pour mettre à jour le rôle du membre
-    const updatedMembre = await roleController.assignRole(membreId, role);
+    const updatedMembre = await assignRole(membreId, role);
     res.json({ message: "Rôle assigné avec succès", membre: updatedMembre });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -38,7 +46,7 @@ router.get(
   checkRole(["President", "Tresorier", "Commissaire aux comptes"]),
   async (req, res) => {
     try {
-      const membres = await roleController.getAllMembers();
+      const membres = await getAllMembers();
       if (!membres || membres.length === 0) {
         return res.status(404).json({ message: "Aucun membre trouvé" });
       }
@@ -58,7 +66,7 @@ router.get(
   checkRole(["President", "Censeur"]),
   async (req, res) => {
     try {
-      const membre = await roleController.getMemberById(req.params.id);
+      const membre = await getMemberById(req.params.id);
       if (!membre) {
         return res.status(404).json({ message: "Membre non trouvé" });
       }
@@ -72,7 +80,7 @@ router.get(
 // Route pour récupérer le rôle d'un membre (accessible uniquement par Président)
 router.get("/role/:id", checkRole(["President"]), async (req, res) => {
   try {
-    const membre = await roleController.getMemberRole(req.params.id);
+    const membre = await getMemberRole(req.params.id);
     if (!membre) {
       return res.status(404).json({ message: "Membre non trouvé" });
     }
@@ -86,10 +94,7 @@ router.get("/role/:id", checkRole(["President"]), async (req, res) => {
 router.put("/modifier-role/:id", checkRole(["President"]), async (req, res) => {
   try {
     const { role } = req.body; // Récupère le rôle à attribuer
-    const updatedMembre = await roleController.updateMemberRole(
-      req.params.id,
-      role
-    );
+    const updatedMembre = await updateMemberRole(req.params.id, role);
     res.json({ message: "Rôle mis à jour avec succès", membre: updatedMembre });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -103,7 +108,7 @@ router.delete(
   async (req, res) => {
     try {
       const membreId = req.params.id;
-      const result = await roleController.removeRoleFromMember(membreId);
+      const result = await removeRoleFromMember(membreId);
       if (result) {
         res.json({ message: "Rôle supprimé avec succès" });
       } else {
@@ -115,4 +120,4 @@ router.delete(
   }
 );
 
-module.exports = router;
+export default router;

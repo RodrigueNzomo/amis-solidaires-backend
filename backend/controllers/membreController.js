@@ -1,61 +1,66 @@
 // backend/controllers/membreController.js
 
-const Membre = require("../models/Membre");
+import Membre, {
+  find,
+  findByIdAndUpdate,
+  findByIdAndDelete,
+} from "../models/Membre";
 
-// Ajouter un nouveau membre
-const ajouterMembre = async (req, res) => {
+// Ajouter un membre
+const ajouterMembre = async (data) => {
+  // Ne pas inclure req, res
   try {
-    const membre = new Membre(req.body);
+    const membre = new Membre(data);
     await membre.save();
-    res.status(201).json(membre);
+    return membre;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Récupérer tous les membres
-const getMembres = async (req, res) => {
+const getMembres = async () => {
   try {
-    const membres = await Membre.find();
-    res.json(membres);
+    const membres = await find();
+    return membres;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Modifier un membre
-const modifierMembre = async (req, res) => {
+const modifierMembre = async (id, data) => {
+  // Utilisation de id et data
   try {
-    const membre = await Membre.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const membre = await findByIdAndUpdate(id, data, { new: true });
     if (!membre) {
-      return res.status(404).send("Membre non trouvé");
+      throw new Error("Membre non trouvé");
     }
-    res.json(membre);
+    return membre;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Supprimer un membre
-const supprimerMembre = async (req, res) => {
+const supprimerMembre = async (id) => {
+  // Utilisation de l'id seulement
   try {
-    const membre = await Membre.findByIdAndDelete(req.params.id);
+    const membre = await findByIdAndDelete(id);
     if (!membre) {
-      return res.status(404).send("Membre non trouvé");
+      throw new Error("Membre non trouvé");
     }
-    res.json({ message: "Membre supprimé avec succès" });
+    return membre;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
-module.exports = {
+export default {
   ajouterMembre,
   getMembres,
   modifierMembre,

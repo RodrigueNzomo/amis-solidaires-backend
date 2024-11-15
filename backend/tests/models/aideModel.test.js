@@ -1,9 +1,9 @@
 // tests/models/aideModel.test.js
-const chai = require("chai");
-const sinon = require("sinon");
+import chai from "chai";
+import { stub } from "sinon";
 const { expect } = chai;
-const Aide = require("../../backend/models/Aide");
-const { connectDB, disconnectDB, resetDB } = require("../testUtils/testDB"); // Importation de la config DB
+import Aide, { prototype } from "../../backend/models/Aide";
+import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB"; // Importation de la config DB
 
 describe("Aide Model", () => {
   // Avant tous les tests, connecter à la DB en mémoire
@@ -29,9 +29,7 @@ describe("Aide Model", () => {
       description: "Aide pour l'éducation",
     };
 
-    const createAideStub = sinon
-      .stub(Aide.prototype, "save")
-      .resolves(fakeAide);
+    const createAideStub = stub(prototype, "save").resolves(fakeAide);
 
     const aide = new Aide(fakeAide);
     await aide.save();

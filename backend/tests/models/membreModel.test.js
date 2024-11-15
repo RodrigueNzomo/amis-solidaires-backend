@@ -1,9 +1,9 @@
 // tests/models/membreModel.test.js
-const chai = require("chai");
-const sinon = require("sinon");
+import chai from "chai";
+import { stub } from "sinon";
 const { expect } = chai;
-const Membre = require("../../backend/models/Membre");
-const { connectDB, disconnectDB, resetDB } = require("../testUtils/testDB");
+import Membre, { prototype } from "../../backend/models/Membre";
+import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB";
 
 describe("Membre Model", () => {
   // Avant tous les tests, connecter à la DB en mémoire
@@ -30,9 +30,7 @@ describe("Membre Model", () => {
       telephone: "0123456789",
     };
 
-    const createMembreStub = sinon
-      .stub(Membre.prototype, "save")
-      .resolves(fakeMembre);
+    const createMembreStub = stub(prototype, "save").resolves(fakeMembre);
 
     const membre = new Membre(fakeMembre);
     await membre.save();

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-const { validatePretData } = require("../utils/validators"); // Import de la validation des données pour les prêts
+import { validatePretData } from "../utils/validators"; // Import de la validation des données pour les prêts
 
 // Schéma du prêt
 const PretSchema = new Schema(
@@ -54,4 +54,4 @@ PretSchema.pre("save", function (next) {
   }
 });
 
-module.exports = mongoose.model("Pret", PretSchema);
+export default model("Pret", PretSchema);

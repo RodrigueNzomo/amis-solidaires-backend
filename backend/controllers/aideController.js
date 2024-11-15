@@ -1,28 +1,28 @@
 // backend/controllers/aideController.js
 
-const Aide = require("../models/Aide");
+import Aide, { find } from "../models/Aide";
 
 // Créer une nouvelle aide
-const createAide = async (req, res) => {
+const createAide = async (data) => {
   try {
-    const aide = new Aide(req.body);
+    const aide = new Aide(data); // Crée une nouvelle instance d'Aide avec les données passées
     await aide.save();
-    res.status(201).json(aide);
+    return aide;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Récupérer toutes les aides
-const getAllAides = async (req, res) => {
+const getAllAides = async () => {
   try {
-    const aides = await Aide.find().populate("beneficiaire");
-    res.json(aides);
+    const aides = await find().populate("beneficiaire");
+    return aides;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
-module.exports = { createAide, getAllAides };
+export default { createAide, getAllAides };

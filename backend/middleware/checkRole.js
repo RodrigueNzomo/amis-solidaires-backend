@@ -1,4 +1,4 @@
-const Membre = require("../models/Membre");
+import { findById } from "../models/Membre";
 
 const checkRole = (roles) => {
   return async (req, res, next) => {
@@ -10,7 +10,7 @@ const checkRole = (roles) => {
     }
 
     try {
-      const membre = await Membre.findById(userId).select("role");
+      const membre = await findById(userId).select("role");
 
       if (!membre) {
         return res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -42,4 +42,4 @@ const checkRole = (roles) => {
   };
 };
 
-module.exports = checkRole;
+export default checkRole;

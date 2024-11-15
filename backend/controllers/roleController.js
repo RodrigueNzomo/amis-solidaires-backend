@@ -1,8 +1,8 @@
-const Membre = require("../models/Membre");
+// backend/controllers/roleController.js
+import { findById, find } from "../models/Membre";
 
 // Méthode pour assigner un rôle à un membre
 const assignRole = async (membreId, role) => {
-  // Vérifier que le rôle est valide
   const validRoles = [
     "President",
     "Tresorier",
@@ -16,13 +16,11 @@ const assignRole = async (membreId, role) => {
     throw new Error("Rôle invalide");
   }
 
-  // Chercher le membre par son ID
-  const membre = await Membre.findById(membreId);
+  const membre = await findById(membreId);
   if (!membre) {
     throw new Error("Membre non trouvé");
   }
 
-  // Modifier le rôle du membre
   membre.role = role;
   await membre.save();
   return membre;
@@ -30,17 +28,17 @@ const assignRole = async (membreId, role) => {
 
 // Méthode pour récupérer tous les membres
 const getAllMembers = async () => {
-  return await Membre.find();
+  return await find();
 };
 
 // Méthode pour récupérer un membre par ID
 const getMemberById = async (id) => {
-  return await Membre.findById(id);
+  return await findById(id);
 };
 
 // Méthode pour récupérer le rôle d'un membre
 const getMemberRole = async (id) => {
-  const membre = await Membre.findById(id);
+  const membre = await findById(id);
   if (!membre) {
     throw new Error("Membre non trouvé");
   }
@@ -62,7 +60,7 @@ const updateMemberRole = async (membreId, role) => {
     throw new Error("Rôle invalide");
   }
 
-  const membre = await Membre.findById(membreId);
+  const membre = await findById(membreId);
   if (!membre) {
     throw new Error("Membre non trouvé");
   }
@@ -74,18 +72,17 @@ const updateMemberRole = async (membreId, role) => {
 
 // Méthode pour supprimer un rôle (réinitialiser à "Membre")
 const removeRoleFromMember = async (membreId) => {
-  const membre = await Membre.findById(membreId);
+  const membre = await findById(membreId);
   if (!membre) {
     throw new Error("Membre non trouvé");
   }
 
-  // Réinitialisation du rôle
   membre.role = "Membre";
   await membre.save();
   return membre;
 };
 
-module.exports = {
+export default {
   assignRole,
   getAllMembers,
   getMemberById,

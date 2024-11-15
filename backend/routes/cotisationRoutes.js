@@ -1,20 +1,24 @@
-const express = require("express");
-const cotisationController = require("../controllers/cotisationController");
-const authMiddleware = require("../middleware/authMiddleware");
-const { validateCotisationData } = require("../utils/validators"); // Import de la validation des données pour les cotisations
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Import de la gestion des erreurs de validation
+// backend/routes/cotisationRoutes.js
 
-const router = express.Router();
+import { Router } from "express";
+import { ajouterCotisation, getCotisations, modifierCotisation, supprimerCotisation } from "../controllers/cotisationController";
+import authMiddleware from "../middleware/authMiddleware";
+import default from "../utils/validators";
+const { validateCotisationData } = default;
+import { handleValidationErrors } from "../middleware/errorHandler";
 
-// Ajouter une cotisation (route protégée par l'authentification et la validation)
+const router = Router();
+
+// Ajouter une cotisation
 router.post(
   "/ajouter",
-  authMiddleware, // Vérification de l'authentification
-  validateCotisationData, // Validation des données
-  handleValidationErrors, // Gestion des erreurs de validation
+  authMiddleware,
+  validateCotisationData,
+  handleValidationErrors,
   async (req, res) => {
     try {
-      const cotisation = await cotisationController.ajouterCotisation(req, res);
+      // Envoie directement req.body au contrôleur sans req et res
+      const cotisation = await ajouterCotisation(req.body);
       res
         .status(201)
         .json({ message: "Cotisation ajoutée avec succès", cotisation });
@@ -24,10 +28,10 @@ router.post(
   }
 );
 
-// Récupérer toutes les cotisations (route protégée par l'authentification)
+// Récupérer toutes les cotisations
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const cotisations = await cotisationController.getCotisations(req, res);
+    const cotisations = await getCotisations();
     if (!cotisations || cotisations.length === 0) {
       return res.status(404).json({ message: "Aucune cotisation trouvée" });
     }
@@ -40,17 +44,17 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Modifier une cotisation (route protégée par l'authentification et la validation)
+// Modifier une cotisation
 router.put(
   "/:id",
-  authMiddleware, // Vérification de l'authentification
-  validateCotisationData, // Validation des données de la cotisation
-  handleValidationErrors, // Gestion des erreurs de validation
+  authMiddleware,
+  validateCotisationData,
+  handleValidationErrors,
   async (req, res) => {
     try {
-      const cotisation = await cotisationController.modifierCotisation(
-        req,
-        res
+      const cotisation = await modifierCotisation(
+        req.params.id,
+        req.body
       );
       if (!cotisation) {
         return res.status(404).json({ message: "Cotisation non trouvée" });
@@ -65,10 +69,12 @@ router.put(
   }
 );
 
-// Supprimer une cotisation (route protégée par l'authentification)
+// Supprimer une cotisation
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const cotisation = await cotisationController.supprimerCotisation(req, res);
+    const cotisation = await supprimerCotisation(
+      req.params.id
+    );
     if (!cotisation) {
       return res.status(404).json({ message: "Cotisation non trouvée" });
     }
@@ -81,4 +87,4 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

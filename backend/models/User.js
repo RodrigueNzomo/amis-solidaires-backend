@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose, { model } from "mongoose";
+import { compare, genSalt, hash } from "bcryptjs";
 const { Schema } = mongoose;
-const { validateUserData } = require("../utils/validators"); // Import de la validation des données utilisateur
+import default from "../utils/validators";
+const { validateUserData } = default; // Import de la validation des données utilisateur
 
 // Schéma de l'utilisateur
 const userSchema = new Schema(
@@ -28,7 +29,7 @@ const userSchema = new Schema(
 
 // Méthode pour vérifier le mot de passe
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return await compare(enteredPassword, this.password);
 };
 
 // Pré-enregistrement pour hasher le mot de passe avant la sauvegarde
@@ -38,9 +39,9 @@ userSchema.pre("save", async function (next) {
     next();
   }
   // Génération du sel pour hasher le mot de passe
-  const salt = await bcrypt.genSalt(10);
+  const salt = await genSalt(10);
   // Hachage du mot de passe
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await hash(this.password, salt);
   next();
 });
 
@@ -59,4 +60,4 @@ userSchema.pre("save", function (next) {
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+export default model("User", userSchema);

@@ -1,10 +1,10 @@
 // tests/routes/aideRoutes.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app");
-const Aide = require("../../backend/models/Aide");
+import app from "../../backend/app";
+import Aide, { prototype } from "../../backend/models/Aide";
 
 describe("Aide Routes", () => {
   describe("POST /api/aides", () => {
@@ -16,9 +16,7 @@ describe("Aide Routes", () => {
         description: "Aide pour l'éducation",
       };
 
-      const createAideStub = sinon
-        .stub(Aide.prototype, "save")
-        .resolves(fakeAide);
+      const createAideStub = stub(prototype, "save").resolves(fakeAide);
 
       const res = await request(app)
         .post("/api/aides")
@@ -49,7 +47,7 @@ describe("Aide Routes", () => {
         { typeAide: "santé", montant: 500 },
       ];
 
-      const findAidesStub = sinon.stub(Aide, "find").resolves(fakeAides);
+      const findAidesStub = stub(Aide, "find").resolves(fakeAides);
 
       const res = await request(app)
         .get("/api/aides")

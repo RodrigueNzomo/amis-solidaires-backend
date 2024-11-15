@@ -1,9 +1,9 @@
 // tests/models/pretModel.test.js
-const chai = require("chai");
-const sinon = require("sinon");
+import chai from "chai";
+import { stub } from "sinon";
 const { expect } = chai;
-const Pret = require("../../backend/models/Pret");
-const { connectDB, disconnectDB, resetDB } = require("../testUtils/testDB");
+import Pret, { prototype } from "../../backend/models/Pret";
+import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB";
 
 describe("Pret Model", () => {
   // Avant tous les tests, connecter à la DB en mémoire
@@ -30,9 +30,7 @@ describe("Pret Model", () => {
       statut: "actif",
     };
 
-    const createPretStub = sinon
-      .stub(Pret.prototype, "save")
-      .resolves(fakePret);
+    const createPretStub = stub(prototype, "save").resolves(fakePret);
 
     const pret = new Pret(fakePret);
     await pret.save();

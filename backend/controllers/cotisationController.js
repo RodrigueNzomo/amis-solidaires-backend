@@ -1,63 +1,65 @@
 // backend/controllers/cotisationController.js
 
-const Cotisation = require("../models/Cotisation");
+import Cotisation, {
+  find,
+  findByIdAndUpdate,
+  findByIdAndDelete,
+} from "../models/Cotisation";
 
-// Ajouter une nouvelle cotisation
-const ajouterCotisation = async (req, res) => {
+// Ajouter une cotisation
+const ajouterCotisation = async (data) => {
   try {
-    const cotisation = new Cotisation(req.body);
+    const cotisation = new Cotisation(data);
     await cotisation.save();
-    res.status(201).json(cotisation);
+    return cotisation;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Récupérer toutes les cotisations
-const getCotisations = async (req, res) => {
+const getCotisations = async () => {
   try {
-    const cotisations = await Cotisation.find();
-    res.json(cotisations);
+    const cotisations = await find();
+    return cotisations;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Modifier une cotisation
-const modifierCotisation = async (req, res) => {
+const modifierCotisation = async (id, data) => {
   try {
-    const cotisation = await Cotisation.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const cotisation = await findByIdAndUpdate(id, data, {
+      new: true,
+    });
     if (!cotisation) {
-      return res.status(404).send("Cotisation non trouvée");
+      throw new Error("Cotisation non trouvée");
     }
-    res.json(cotisation);
+    return cotisation;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
 // Supprimer une cotisation
-const supprimerCotisation = async (req, res) => {
+const supprimerCotisation = async (id) => {
   try {
-    const cotisation = await Cotisation.findByIdAndDelete(req.params.id);
+    const cotisation = await findByIdAndDelete(id);
     if (!cotisation) {
-      return res.status(404).send("Cotisation non trouvée");
+      throw new Error("Cotisation non trouvée");
     }
-    res.json({ message: "Cotisation supprimée avec succès" });
+    return cotisation;
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur");
   }
 };
 
-module.exports = {
+export default {
   ajouterCotisation,
   getCotisations,
   modifierCotisation,

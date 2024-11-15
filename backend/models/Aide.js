@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-const { validateAideData } = require("../utils/validators"); // Importer la fonction de validation externe
+import _default from "../utils/validators";
+const { validateAideData } = _default; // Importer la fonction de validation externe
 
 // Schéma de l'Aide
 const AideSchema = new Schema(
@@ -37,4 +38,4 @@ AideSchema.statics.findByBeneficiaire = function (beneficiaireId) {
   return this.find({ beneficiaire: beneficiaireId });
 };
 
-module.exports = mongoose.model("Aide", AideSchema);
+export default model("Aide", AideSchema);

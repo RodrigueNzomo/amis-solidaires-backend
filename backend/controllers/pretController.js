@@ -1,6 +1,10 @@
 // backend/controllers/pretController.js
 
-const Pret = require("../models/Pret"); // Assurez-vous que le modèle est bien importé
+import Pret, {
+  find,
+  findByIdAndUpdate,
+  findByIdAndDelete,
+} from "../models/Pret"; // Assurez-vous que le modèle est bien importé
 
 // Ajouter un nouveau prêt
 const ajouterPret = async (req, res) => {
@@ -33,7 +37,7 @@ const ajouterPret = async (req, res) => {
 // Récupérer tous les prêts
 const getPrets = async (req, res) => {
   try {
-    const prets = await Pret.find();
+    const prets = await find();
     res.status(200).json(prets);
   } catch (err) {
     console.error(err.message);
@@ -44,7 +48,7 @@ const getPrets = async (req, res) => {
 // Modifier un prêt
 const modifierPret = async (req, res) => {
   try {
-    const pret = await Pret.findByIdAndUpdate(req.params.id, req.body, {
+    const pret = await findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     if (!pret) {
@@ -60,7 +64,7 @@ const modifierPret = async (req, res) => {
 // Supprimer un prêt
 const supprimerPret = async (req, res) => {
   try {
-    const pret = await Pret.findByIdAndDelete(req.params.id);
+    const pret = await findByIdAndDelete(req.params.id);
     if (!pret) {
       return res.status(404).send("Prêt non trouvé");
     }
@@ -72,7 +76,7 @@ const supprimerPret = async (req, res) => {
 };
 
 // Assurez-vous que toutes les fonctions sont bien exportées
-module.exports = {
+export default {
   ajouterPret,
   getPrets,
   modifierPret,

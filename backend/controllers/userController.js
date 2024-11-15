@@ -1,11 +1,10 @@
 // backend/controllers/userController.js
-
-const User = require("../models/User");
+import { findById, find } from "../models/User";
 
 // Récupérer les détails d'un utilisateur
 const getUserDetails = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password");
+    const user = await findById(req.params.id).select("-password");
     if (!user) {
       return res.status(404).json({ msg: "Utilisateur non trouvé" });
     }
@@ -19,7 +18,7 @@ const getUserDetails = async (req, res) => {
 // Récupérer tous les utilisateurs
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await find().select("-password");
     res.json(users);
   } catch (err) {
     console.error(err.message);
@@ -27,7 +26,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getUserDetails,
   getAllUsers,
 };

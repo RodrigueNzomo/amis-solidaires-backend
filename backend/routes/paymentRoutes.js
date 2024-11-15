@@ -1,10 +1,13 @@
-const express = require("express");
-const paymentController = require("../controllers/paymentController");
-const authMiddleware = require("../middleware/authMiddleware");
-const { validatePaymentData } = require("../utils/validators"); // Import de la validation des données pour les paiements
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Import pour la gestion des erreurs de validation
+// backend/routes/paymentRoutes.js
 
-const router = express.Router();
+import { Router } from "express";
+import { ajouterPaiement, getPayments, modifierPaiement, supprimerPaiement } from "../controllers/paymentController";
+import authMiddleware from "../middleware/authMiddleware";
+import default from "../utils/validators";
+const { validatePaymentData } = default; // Import de la validation des données pour les paiements
+import { handleValidationErrors } from "../middleware/errorHandler"; // Import pour la gestion des erreurs de validation
+
+const router = Router();
 
 // Ajouter un paiement (route protégée par l'authentification et la validation des données)
 router.post(
@@ -14,7 +17,8 @@ router.post(
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const paiement = await paymentController.ajouterPaiement(req, res);
+      // Utilisation de la fonction du contrôleur pour ajouter un paiement
+      const paiement = await ajouterPaiement(req.body); // Assurez-vous d'utiliser req.body directement
       res
         .status(201)
         .json({ message: "Paiement ajouté avec succès", paiement });
@@ -24,10 +28,10 @@ router.post(
   }
 );
 
-// Récupérer tous les paiements (route protégée par l'authentification)
+// Récupérer tous les paiements
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const paiements = await paymentController.getPayments(req, res);
+    const paiements = await getPayments(); // Modification pour ne pas passer req, res
     if (!paiements || paiements.length === 0) {
       return res.status(404).json({ message: "Aucun paiement trouvé" });
     }
@@ -40,7 +44,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Modifier un paiement par ID (route protégée par l'authentification et la validation)
+// Modifier un paiement
 router.put(
   "/:id",
   authMiddleware, // Vérification de l'authentification
@@ -48,7 +52,10 @@ router.put(
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const paiement = await paymentController.modifierPaiement(req, res);
+      const paiement = await modifierPaiement(
+        req.params.id,
+        req.body
+      ); // Passer id et body
       if (!paiement) {
         return res.status(404).json({ message: "Paiement non trouvé" });
       }
@@ -62,10 +69,10 @@ router.put(
   }
 );
 
-// Supprimer un paiement par ID (route protégée par l'authentification)
+// Supprimer un paiement
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const paiement = await paymentController.supprimerPaiement(req, res);
+    const paiement = await supprimerPaiement(req.params.id); // Passer uniquement l'id
     if (!paiement) {
       return res.status(404).json({ message: "Paiement non trouvé" });
     }
@@ -78,4 +85,4 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

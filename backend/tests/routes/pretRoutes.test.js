@@ -1,10 +1,10 @@
 // tests/routes/pretRoutes.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app");
-const Pret = require("../../backend/models/Pret");
+import app from "../../backend/app";
+import Pret, { prototype } from "../../backend/models/Pret";
 
 describe("Pret Routes", () => {
   describe("POST /api/prets", () => {
@@ -17,9 +17,7 @@ describe("Pret Routes", () => {
         statut: "actif",
       };
 
-      const createPretStub = sinon
-        .stub(Pret.prototype, "save")
-        .resolves(fakePret);
+      const createPretStub = stub(prototype, "save").resolves(fakePret);
 
       const res = await request(app)
         .post("/api/prets/ajouter")
@@ -50,7 +48,7 @@ describe("Pret Routes", () => {
         { beneficiaire: "userId124", montant: 2000, statut: "remboursé" },
       ];
 
-      const findPretsStub = sinon.stub(Pret, "find").resolves(fakePrets);
+      const findPretsStub = stub(Pret, "find").resolves(fakePrets);
 
       const res = await request(app)
         .get("/api/prets")

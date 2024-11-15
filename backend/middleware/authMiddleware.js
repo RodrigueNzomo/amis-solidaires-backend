@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config/config");
+import { verify } from "jsonwebtoken";
+import { JWT_SECRET } from "../config/config";
 
 // Fonction de vérification du token JWT
 const verifyToken = (token) => {
-  return jwt.verify(token, JWT_SECRET);
+  return verify(token, JWT_SECRET);
 };
 
 // Middleware pour vérifier l'authentification via JWT
@@ -31,4 +31,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

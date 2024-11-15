@@ -1,7 +1,7 @@
 // backend/services/paymentService.js
 
-const Payment = require("../models/Payment"); // Exemple de modèle de paiement
-const { sendNotification } = require("./notificationService"); // Notification service pour notifier après paiement
+import Payment from "../models/Payment"; // Exemple de modèle de paiement
+import { sendNotification } from "./notificationService"; // Notification service pour notifier après paiement
 
 // Fonction pour traiter un paiement
 const processPayment = async (userId, amount) => {
@@ -36,6 +36,6 @@ const processPayment = async (userId, amount) => {
   }
 };
 
-module.exports = {
+export default {
   processPayment,
 };

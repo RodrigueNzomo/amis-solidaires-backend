@@ -1,20 +1,23 @@
-const express = require("express");
-const membreController = require("../controllers/membreController");
-const authMiddleware = require("../middleware/authMiddleware");
-const { validateMembreData } = require("../utils/validators"); // Import de la validation des données pour les membres
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Import de la gestion des erreurs de validation
+// backend/routes/membreRoutes.js
 
-const router = express.Router();
+import { Router } from "express";
+import { ajouterMembre, getMembres, modifierMembre, supprimerMembre } from "../controllers/membreController";
+import authMiddleware from "../middleware/authMiddleware";
+import default from "../utils/validators";
+const { validateMembreData } = default; // Import de la validation des données pour les membres
+import { handleValidationErrors } from "../middleware/errorHandler"; // Import de la gestion des erreurs de validation
 
-// Ajouter un membre (route protégée par l'authentification et la validation des données)
+const router = Router();
+
+// Ajouter un membre
 router.post(
   "/ajouter",
-  authMiddleware, // Vérification de l'authentification
-  validateMembreData, // Validation des données du membre
-  handleValidationErrors, // Gestion des erreurs de validation
+  authMiddleware,
+  validateMembreData,
+  handleValidationErrors,
   async (req, res) => {
     try {
-      const membre = await membreController.ajouterMembre(req, res);
+      const membre = await ajouterMembre(req.body); // Utilisation de req.body au lieu de req, res
       res.status(201).json({ message: "Membre ajouté avec succès", membre });
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -22,10 +25,10 @@ router.post(
   }
 );
 
-// Récupérer tous les membres (route protégée par l'authentification)
+// Récupérer tous les membres
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const membres = await membreController.getMembres(req, res);
+    const membres = await getMembres(); // Pas besoin de req, res
     if (!membres || membres.length === 0) {
       return res.status(404).json({ message: "Aucun membre trouvé" });
     }
@@ -38,15 +41,18 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Modifier un membre par ID (route protégée par l'authentification et la validation)
+// Modifier un membre par ID
 router.put(
   "/:id",
-  authMiddleware, // Vérification de l'authentification
-  validateMembreData, // Validation des données du membre
-  handleValidationErrors, // Gestion des erreurs de validation
+  authMiddleware,
+  validateMembreData,
+  handleValidationErrors,
   async (req, res) => {
     try {
-      const membre = await membreController.modifierMembre(req, res);
+      const membre = await modifierMembre(
+        req.params.id,
+        req.body
+      ); // Modification avec les paramètres requis
       if (!membre) {
         return res.status(404).json({ message: "Membre non trouvé" });
       }
@@ -60,10 +66,10 @@ router.put(
   }
 );
 
-// Supprimer un membre par ID (route protégée par l'authentification)
+// Supprimer un membre par ID
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const membre = await membreController.supprimerMembre(req, res);
+    const membre = await supprimerMembre(req.params.id); // Passer seulement req.params.id
     if (!membre) {
       return res.status(404).json({ message: "Membre non trouvé" });
     }
@@ -76,4 +82,4 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

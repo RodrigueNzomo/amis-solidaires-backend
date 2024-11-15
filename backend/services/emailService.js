@@ -1,9 +1,9 @@
 // backend/services/emailService.js
 
-const nodemailer = require("nodemailer");
+import { createTransport } from "nodemailer";
 
 // Configuration du transporteur pour Nodemailer (utilisation de Gmail ici comme exemple)
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
   service: "gmail", // Utilisation de Gmail pour envoyer des emails
   auth: {
     user: process.env.EMAIL_USER, // Doit être défini dans les variables d'environnement
@@ -31,6 +31,6 @@ const sendEmail = async (to, subject, text, html = "") => {
   }
 };
 
-module.exports = {
+export default {
   sendEmail,
 };

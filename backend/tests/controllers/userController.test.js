@@ -1,10 +1,10 @@
 // tests/controllers/userController.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app"); // Assure-toi que ce chemin est correct
-const User = require("../../backend/models/User");
+import app from "../../backend/app"; // Assure-toi que ce chemin est correct
+import User from "../../backend/models/User";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 
@@ -16,7 +16,7 @@ describe("User Controller", () => {
         email: "john.doe@example.com",
       };
 
-      const findUserStub = sinon.stub(User, "findById").resolves(fakeUser);
+      const findUserStub = stub(User, "findById").resolves(fakeUser);
 
       const res = await request(app)
         .get(`/api/users/${userId}`)
@@ -29,7 +29,7 @@ describe("User Controller", () => {
     });
 
     it("should return 404 if user not found", async () => {
-      const findUserStub = sinon.stub(User, "findById").resolves(null); // Simuler un utilisateur non trouvé
+      const findUserStub = stub(User, "findById").resolves(null); // Simuler un utilisateur non trouvé
 
       const res = await request(app)
         .get(`/api/users/${userId}`)
@@ -49,7 +49,7 @@ describe("User Controller", () => {
         { name: "Jane Smith", email: "jane.smith@example.com" },
       ];
 
-      const findUsersStub = sinon.stub(User, "find").resolves(fakeUsers);
+      const findUsersStub = stub(User, "find").resolves(fakeUsers);
 
       const res = await request(app)
         .get("/api/users")

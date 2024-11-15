@@ -1,9 +1,9 @@
 // tests/models/cotisationModel.test.js
-const chai = require("chai");
-const sinon = require("sinon");
+import chai from "chai";
+import { stub } from "sinon";
 const { expect } = chai;
-const Cotisation = require("../../backend/models/Cotisation");
-const { connectDB, disconnectDB, resetDB } = require("../testUtils/testDB");
+import Cotisation, { prototype } from "../../backend/models/Cotisation";
+import { connectDB, disconnectDB, resetDB } from "../testUtils/testDB";
 
 describe("Cotisation Model", () => {
   // Avant tous les tests, connecter à la DB en mémoire
@@ -28,9 +28,9 @@ describe("Cotisation Model", () => {
       statut: "payé",
     };
 
-    const createCotisationStub = sinon
-      .stub(Cotisation.prototype, "save")
-      .resolves(fakeCotisation);
+    const createCotisationStub = stub(prototype, "save").resolves(
+      fakeCotisation
+    );
 
     const cotisation = new Cotisation(fakeCotisation);
     await cotisation.save();

@@ -1,31 +1,30 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const connectDB = require("./config/db"); // Connexion à la base de données MongoDB
+import express, { json } from "express";
+import { config } from "dotenv";
+import morgan from "morgan";
+import helmet from "helmet";
+import connectDB from "./config/db"; // Connexion à la base de données MongoDB
 
 // Import des routes
-const membreRoutes = require("./routes/membreRoutes");
-const cotisationRoutes = require("./routes/cotisationRoutes");
-const pretRoutes = require("./routes/pretRoutes");
-const aideRoutes = require("./routes/aideRoutes");
-const paymentRoutes = require("./routes/paymentRoutes");
-const roleRoutes = require("./routes/roleRoutes"); // Importation des routes liées aux rôles
+import membreRoutes from "./routes/membreRoutes";
+import cotisationRoutes from "./routes/cotisationRoutes";
+import pretRoutes from "./routes/pretRoutes";
+import aideRoutes from "./routes/aideRoutes";
+import paymentRoutes from "./routes/paymentRoutes";
+import roleRoutes from "./routes/roleRoutes"; // Importation des routes liées aux rôles
 
 // Import des middlewares
-const errorHandler = require("./middleware/errorHandler"); // Middleware pour la gestion des erreurs
-const authMiddleware = require("./middleware/authMiddleware"); // Middleware d'authentification
+import errorHandler from "./middleware/errorHandler"; // Middleware pour la gestion des erreurs
+import authMiddleware from "./middleware/authMiddleware"; // Middleware d'authentification
 
 // Middleware pour la validation des données
-const validateMembre = require("./middleware/inputValidator").validateMembre;
-const validateCotisation =
-  require("./middleware/inputValidator").validateCotisation;
-const validatePret = require("./middleware/inputValidator").validatePret;
-const validateAide = require("./middleware/inputValidator").validateAide;
-const validatePayment = require("./middleware/inputValidator").validatePayment;
+import { validateMembre } from "./middleware/inputValidator";
+import { validateCotisation } from "./middleware/inputValidator";
+import { validatePret } from "./middleware/inputValidator";
+import { validateAide } from "./middleware/inputValidator";
+import { validatePayment } from "./middleware/inputValidator";
 
 // Initialisation de l'application
-dotenv.config();
+config();
 const app = express();
 
 // Connexion à la base de données MongoDB
@@ -34,7 +33,7 @@ connectDB();
 // Middlewares de sécurité et de logs
 app.use(helmet()); // Sécurisation de l'application (headers HTTP)
 app.use(morgan("dev")); // Logging des requêtes
-app.use(express.json()); // Parser les corps de requêtes en JSON
+app.use(json()); // Parser les corps de requêtes en JSON
 
 // Routes de l'application avec validation et authentification
 app.use("/api/membres", authMiddleware, validateMembre, membreRoutes); // Validation et authentification avant les routes

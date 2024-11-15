@@ -1,4 +1,4 @@
-const { body, param, validationResult } = require("express-validator");
+import { body, param, validationResult } from "express-validator";
 
 // Fonction générique pour la validation des erreurs
 const handleValidationErrors = (req, res, next) => {
@@ -111,7 +111,7 @@ const validateIdParam = [
   handleValidationErrors,
 ];
 
-module.exports = {
+export default {
   validateEmail,
   validatePassword,
   validateAideData,

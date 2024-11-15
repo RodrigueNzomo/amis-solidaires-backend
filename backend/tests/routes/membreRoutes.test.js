@@ -1,10 +1,10 @@
 // tests/routes/membreRoutes.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app");
-const Membre = require("../../backend/models/Membre");
+import app from "../../backend/app";
+import Membre, { prototype } from "../../backend/models/Membre";
 
 describe("Membre Routes", () => {
   describe("POST /api/membres", () => {
@@ -17,9 +17,7 @@ describe("Membre Routes", () => {
         telephone: "0123456789",
       };
 
-      const createMembreStub = sinon
-        .stub(Membre.prototype, "save")
-        .resolves(fakeMembre);
+      const createMembreStub = stub(prototype, "save").resolves(fakeMembre);
 
       const res = await request(app)
         .post("/api/membres/ajouter")
@@ -50,7 +48,7 @@ describe("Membre Routes", () => {
         { nom: "Jane", prenom: "Smith", email: "jane.smith@example.com" },
       ];
 
-      const findMembresStub = sinon.stub(Membre, "find").resolves(fakeMembres);
+      const findMembresStub = stub(Membre, "find").resolves(fakeMembres);
 
       const res = await request(app)
         .get("/api/membres")

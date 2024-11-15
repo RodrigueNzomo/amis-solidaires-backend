@@ -1,10 +1,12 @@
-const express = require("express");
-const userController = require("../controllers/userController");
-const authMiddleware = require("../middleware/authMiddleware");
-const { validateIdParam } = require("../utils/validators"); // Import de la validation de l'ID
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Import pour la gestion des erreurs de validation
+// backend/routes/userRoutes.js
+import { Router } from "express";
+import { getUserDetails, getAllUsers } from "../controllers/userController";
+import authMiddleware from "../middleware/authMiddleware";
+import default from "../utils/validators";
+const { validateIdParam } = default; // Import de la validation de l'ID
+import { handleValidationErrors } from "../middleware/errorHandler"; // Import pour la gestion des erreurs de validation
 
-const router = express.Router();
+const router = Router();
 
 // Récupérer les détails d'un utilisateur
 router.get(
@@ -19,7 +21,7 @@ router.get(
         return res.status(403).json({ message: "Accès interdit" });
       }
 
-      const user = await userController.getUserDetails(req, res);
+      const user = await getUserDetails(req, res);
       if (!user) {
         return res.status(404).json({ message: "Utilisateur non trouvé" });
       }
@@ -37,7 +39,7 @@ router.get(
 // Récupérer tous les utilisateurs
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const users = await userController.getAllUsers(req, res);
+    const users = await getAllUsers(req, res);
     if (!users || users.length === 0) {
       return res.status(404).json({ message: "Aucun utilisateur trouvé" });
     }
@@ -50,4 +52,4 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

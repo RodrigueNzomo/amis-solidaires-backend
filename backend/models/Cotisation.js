@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose, { model } from "mongoose";
 const { Schema } = mongoose;
-const { validateCotisationData } = require("../utils/validators"); // Import de la validation pour la cotisation
+import _default from "../utils/validators";
+const { validateCotisationData } = _default; // Import de la validation pour la cotisation
 
 // Schéma de la cotisation
 const CotisationSchema = new Schema(
@@ -44,4 +45,4 @@ CotisationSchema.pre("save", function (next) {
   }
 });
 
-module.exports = mongoose.model("Cotisation", CotisationSchema);
+export default model("Cotisation", CotisationSchema);

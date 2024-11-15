@@ -17,6 +17,6 @@ const sendNotification = async (to, subject, message) => {
   }
 };
 
-module.exports = {
+export default {
   sendNotification,
 };

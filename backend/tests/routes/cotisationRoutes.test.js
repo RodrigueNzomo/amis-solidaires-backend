@@ -1,10 +1,10 @@
 // tests/routes/cotisationRoutes.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app");
-const Cotisation = require("../../backend/models/Cotisation");
+import app from "../../backend/app";
+import Cotisation, { prototype } from "../../backend/models/Cotisation";
 
 describe("Cotisation Routes", () => {
   describe("POST /api/cotisations", () => {
@@ -15,9 +15,9 @@ describe("Cotisation Routes", () => {
         statut: "payé",
       };
 
-      const createCotisationStub = sinon
-        .stub(Cotisation.prototype, "save")
-        .resolves(fakeCotisation);
+      const createCotisationStub = stub(prototype, "save").resolves(
+        fakeCotisation
+      );
 
       const res = await request(app)
         .post("/api/cotisations/ajouter")
@@ -48,9 +48,9 @@ describe("Cotisation Routes", () => {
         { membre: "userId124", montant: 500, statut: "en retard" },
       ];
 
-      const findCotisationsStub = sinon
-        .stub(Cotisation, "find")
-        .resolves(fakeCotisations);
+      const findCotisationsStub = stub(Cotisation, "find").resolves(
+        fakeCotisations
+      );
 
       const res = await request(app)
         .get("/api/cotisations")

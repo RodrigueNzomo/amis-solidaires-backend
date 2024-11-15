@@ -1,11 +1,11 @@
 // tests/controllers/aideController.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app"); // Si tu as un fichier app.js pour configurer express
-const Aide = require("../../backend/models/Aide");
-const authMiddleware = require("../../backend/middleware/authMiddleware");
+import app from "../../backend/app"; // Si tu as un fichier app.js pour configurer express
+import Aide, { prototype } from "../../backend/models/Aide";
+import authMiddleware from "../../backend/middleware/authMiddleware";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 
@@ -19,9 +19,7 @@ describe("Aide Controller", () => {
         description: "Aide pour l'éducation",
       };
 
-      const createAideStub = sinon
-        .stub(Aide.prototype, "save")
-        .resolves(fakeAide);
+      const createAideStub = stub(prototype, "save").resolves(fakeAide);
 
       const res = await request(app)
         .post("/api/aides")
@@ -52,7 +50,7 @@ describe("Aide Controller", () => {
         { typeAide: "santé", montant: 500 },
       ];
 
-      const findAidesStub = sinon.stub(Aide, "find").resolves(fakeAides);
+      const findAidesStub = stub(Aide, "find").resolves(fakeAides);
 
       const res = await request(app)
         .get("/api/aides")

@@ -1,10 +1,10 @@
 // tests/controllers/pretController.test.js
-const chai = require("chai");
-const sinon = require("sinon");
-const request = require("supertest");
+import chai from "chai";
+import { stub } from "sinon";
+import request from "supertest";
 const { expect } = chai;
-const app = require("../../backend/app"); // Assure-toi que ce chemin est correct
-const Pret = require("../../backend/models/Pret");
+import app from "../../backend/app"; // Assure-toi que ce chemin est correct
+import Pret, { prototype } from "../../backend/models/Pret";
 
 const userId = "userId123"; // ID utilisateur fictif pour l'authentification
 
@@ -19,9 +19,7 @@ describe("Pret Controller", () => {
         statut: "actif",
       };
 
-      const createPretStub = sinon
-        .stub(Pret.prototype, "save")
-        .resolves(fakePret);
+      const createPretStub = stub(prototype, "save").resolves(fakePret);
 
       const res = await request(app)
         .post("/api/prets/ajouter")
@@ -52,7 +50,7 @@ describe("Pret Controller", () => {
         { beneficiaire: userId, montant: 2000, statut: "remboursé" },
       ];
 
-      const findPretsStub = sinon.stub(Pret, "find").resolves(fakePrets);
+      const findPretsStub = stub(Pret, "find").resolves(fakePrets);
 
       const res = await request(app)
         .get("/api/prets")

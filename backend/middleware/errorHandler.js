@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+import { validationResult } from "express-validator";
 
 // Middleware de validation des données
 const handleValidationErrors = (req, res, next) => {
@@ -23,7 +23,7 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = {
+export default {
   handleValidationErrors,
   errorHandler, // Renommé ici pour être plus cohérent
 };
