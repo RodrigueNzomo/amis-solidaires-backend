@@ -1,10 +1,23 @@
 // backend/routes/membreRoutes.js
 
 import { Router } from "express";
-import { ajouterMembre, getMembres, modifierMembre, supprimerMembre } from "../controllers/membreController";
+import {
+  ajouterMembre,
+  getMembres,
+  modifierMembre,
+  supprimerMembre,
+} from "../controllers/membreController";
 import authMiddleware from "../middleware/authMiddleware";
-import default from "../utils/validators";
-const { validateMembreData } = default; // Import de la validation des données pour les membres
+// Remplacer l'importation par celle-ci, sans 'default'
+// import {
+//   validateMembreData,
+//   validateCotisationData,
+//   validatePretData,
+//   validateAideData,
+//   validatePaymentData,
+// } from "../utils/validators.js";
+
+import { validateMembreData } from "../utils/validators.js"; // Import de la validation des données pour les membres
 import { handleValidationErrors } from "../middleware/errorHandler"; // Import de la gestion des erreurs de validation
 
 const router = Router();
@@ -49,10 +62,7 @@ router.put(
   handleValidationErrors,
   async (req, res) => {
     try {
-      const membre = await modifierMembre(
-        req.params.id,
-        req.body
-      ); // Modification avec les paramètres requis
+      const membre = await modifierMembre(req.params.id, req.body); // Modification avec les paramètres requis
       if (!membre) {
         return res.status(404).json({ message: "Membre non trouvé" });
       }

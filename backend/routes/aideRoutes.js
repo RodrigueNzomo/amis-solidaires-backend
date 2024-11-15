@@ -2,8 +2,17 @@
 
 import { Router } from "express";
 import authMiddleware from "../middleware/authMiddleware";
-import default from "../utils/validators";
-const { validateAideData } = default; // Validation des données d'Aide
+// Remplacer l'importation par celle-ci, sans 'default'
+// import {
+//   validateMembreData,
+//   validateCotisationData,
+//   validatePretData,
+//   validateAideData,
+//   validatePaymentData,
+// } from "../utils/validators.js";
+
+import { validateAideDatData } from "../utils/validators.js";
+// Validation des données d'Aide
 import { handleValidationErrors } from "../middleware/errorHandler"; // Import de la gestion des erreurs de validation
 import { createAide, getAllAides } from "../controllers/aideController"; // Import du contrôleur pour Aide
 

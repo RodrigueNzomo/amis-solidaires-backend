@@ -2,8 +2,16 @@
 import { Router } from "express";
 import { getUserDetails, getAllUsers } from "../controllers/userController";
 import authMiddleware from "../middleware/authMiddleware";
-import default from "../utils/validators";
-const { validateIdParam } = default; // Import de la validation de l'ID
+// Remplacer l'importation par celle-ci, sans 'default'
+// import {
+//   validateMembreData,
+//   validateCotisationData,
+//   validatePretData,
+//   validateAideData,
+//   validatePaymentData,
+// } from "../utils/validators.js";
+
+import { validateIdParam } from "../utils/validators.js"; // Import de la validation de l'ID
 import { handleValidationErrors } from "../middleware/errorHandler"; // Import pour la gestion des erreurs de validation
 
 const router = Router();

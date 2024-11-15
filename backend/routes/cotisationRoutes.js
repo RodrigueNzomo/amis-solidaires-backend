@@ -1,10 +1,24 @@
 // backend/routes/cotisationRoutes.js
 
 import { Router } from "express";
-import { ajouterCotisation, getCotisations, modifierCotisation, supprimerCotisation } from "../controllers/cotisationController";
+import {
+  ajouterCotisation,
+  getCotisations,
+  modifierCotisation,
+  supprimerCotisation,
+} from "../controllers/cotisationController";
 import authMiddleware from "../middleware/authMiddleware";
-import default from "../utils/validators";
-const { validateCotisationData } = default;
+// Remplacer l'importation par celle-ci, sans 'default'
+// import {
+//   validateMembreData,
+//   validateCotisationData,
+//   validatePretData,
+//   validateAideData,
+//   validatePaymentData,
+// } from "../utils/validators.js";
+
+import { validateCotisationData } from "../utils/validators.js";
+
 import { handleValidationErrors } from "../middleware/errorHandler";
 
 const router = Router();
@@ -52,10 +66,7 @@ router.put(
   handleValidationErrors,
   async (req, res) => {
     try {
-      const cotisation = await modifierCotisation(
-        req.params.id,
-        req.body
-      );
+      const cotisation = await modifierCotisation(req.params.id, req.body);
       if (!cotisation) {
         return res.status(404).json({ message: "Cotisation non trouvée" });
       }
@@ -72,9 +83,7 @@ router.put(
 // Supprimer une cotisation
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const cotisation = await supprimerCotisation(
-      req.params.id
-    );
+    const cotisation = await supprimerCotisation(req.params.id);
     if (!cotisation) {
       return res.status(404).json({ message: "Cotisation non trouvée" });
     }

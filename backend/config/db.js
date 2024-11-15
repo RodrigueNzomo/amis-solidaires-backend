@@ -1,19 +1,18 @@
 // backend/config/db.js
-
 import { connect } from "mongoose";
-import { MONGO_URI } from "./config";
+import { mongoURI } from "./config"; // Importation correcte de la config.js
 
 const connectDB = async () => {
   try {
-    await connect(MONGO_URI, {
+    await connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Connexion à MongoDB réussie");
-  } catch (err) {
-    console.error("Erreur de connexion à MongoDB", err);
-    process.exit(1); // Arrêt du processus si la connexion échoue
+    console.log("MongoDB connecté avec succès !");
+  } catch (error) {
+    console.error("Erreur de connexion à MongoDB : ", error.message);
+    process.exit(1); // Quitte le processus en cas d'erreur
   }
 };
 
-export default connectDB;
+export default connectDB; // Exportation avec export default

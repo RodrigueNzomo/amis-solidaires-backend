@@ -1,10 +1,23 @@
 // backend/routes/paymentRoutes.js
 
 import { Router } from "express";
-import { ajouterPaiement, getPayments, modifierPaiement, supprimerPaiement } from "../controllers/paymentController";
+import {
+  ajouterPaiement,
+  getPayments,
+  modifierPaiement,
+  supprimerPaiement,
+} from "../controllers/paymentController";
 import authMiddleware from "../middleware/authMiddleware";
-import default from "../utils/validators";
-const { validatePaymentData } = default; // Import de la validation des données pour les paiements
+// Remplacer l'importation par celle-ci, sans 'default'
+// import {
+//   validateMembreData,
+//   validateCotisationData,
+//   validatePretData,
+//   validateAideData,
+//   validatePaymentData,
+// } from "../utils/validators.js";
+
+import { validatePaymentData } from "../utils/validators.js"; // Import de la validation des données pour les paiements
 import { handleValidationErrors } from "../middleware/errorHandler"; // Import pour la gestion des erreurs de validation
 
 const router = Router();
@@ -52,10 +65,7 @@ router.put(
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const paiement = await modifierPaiement(
-        req.params.id,
-        req.body
-      ); // Passer id et body
+      const paiement = await modifierPaiement(req.params.id, req.body); // Passer id et body
       if (!paiement) {
         return res.status(404).json({ message: "Paiement non trouvé" });
       }
