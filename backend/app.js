@@ -2,7 +2,7 @@ import express, { json } from "express";
 import { config } from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
-import connectDB from "./config/db"; // Connexion à la base de données MongoDB
+import connectDB from "./config/db.js"; // Connexion à la base de données MongoDB
 
 // Import des routes
 import membreRoutes from "./routes/membreRoutes";
