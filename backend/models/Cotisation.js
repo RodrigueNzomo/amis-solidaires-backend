@@ -1,6 +1,6 @@
-// backend/models/Cotisation.js
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { validateCotisationData } = require("../utils/validators"); // Import de la validation pour la cotisation
 
 // Schéma de la cotisation
 const CotisationSchema = new Schema(
@@ -33,14 +33,15 @@ CotisationSchema.statics.findByMembre = function (membreId) {
   return this.find({ membre: membreId });
 };
 
-// Middleware Mongoose pour vérifier les données avant la sauvegarde (exemple)
+// Middleware Mongoose avant sauvegarde pour valider les données
 CotisationSchema.pre("save", function (next) {
-  if (this.montant < 0) {
-    return next(
-      new Error("Le montant de la cotisation ne peut pas être négatif")
-    );
+  try {
+    // Appliquer la validation des données avant de continuer avec la sauvegarde
+    validateCotisationData(this);
+    next();
+  } catch (err) {
+    next(err); // Si la validation échoue, arrêter la sauvegarde et renvoyer l'erreur
   }
-  next();
 });
 
 module.exports = mongoose.model("Cotisation", CotisationSchema);

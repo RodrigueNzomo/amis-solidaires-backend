@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  # Service pour l'application backend Node.js
+  backend:
+    build:
+      context: .          # Dossier racine de ton projet
+      dockerfile: backend/Dockerfile  # Spécifie le Dockerfile dans le backend
+    ports:
+      - "5000:5000"       # Mapper le port 5000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/amisSolidaires  # URI de connexion MongoDB
+      - EMAIL_USER=your-email@example.com  # Email pour envoyer des notifications
+      - EMAIL_PASS=your-email-password  # Mot de passe pour l'email
+    depends_on:
+      - mongo  # Le service backend dépend du service MongoDB
+
+  # Service pour la base de données MongoDB
+  mongo:
+    image: "mongo:latest"   # Utilisation de l'image officielle de MongoDB
+    container_name: mongo   # Nom du conteneur MongoDB
+    ports:
+      - "27017:27017"       # Exposer le port MongoDB
+    volumes:
+      - mongo_data:/data/db # Persistance des données MongoDB
+
+# Définition d'un volume persistant pour MongoDB
+volumes:
+  mongo_data:

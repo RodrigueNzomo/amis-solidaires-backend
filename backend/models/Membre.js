@@ -1,38 +1,53 @@
-// backend/models/Membre.js
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { validateMembreData } = require("../utils/validators"); // Import de la validation des données pour les membres
 
 // Schéma du membre
 const MembreSchema = new Schema(
   {
     nom: {
       type: String,
-      required: [true, "Le nom est requis"], // Message d'erreur personnalisé
-      minlength: [2, "Le nom doit contenir au moins 2 caractères"], // Validation pour la longueur
+      required: [true, "Le nom est requis"],
+      minlength: [2, "Le nom doit contenir au moins 2 caractères"],
+      trim: true, // Retirer les espaces avant/après
     },
     prenom: {
       type: String,
-      required: [true, "Le prénom est requis"], // Message d'erreur personnalisé
-      minlength: [2, "Le prénom doit contenir au moins 2 caractères"], // Validation pour la longueur
+      required: [true, "Le prénom est requis"],
+      minlength: [2, "Le prénom doit contenir au moins 2 caractères"],
+      trim: true, // Retirer les espaces avant/après
     },
     email: {
       type: String,
-      required: [true, "L'email est requis"], // Message d'erreur personnalisé
-      unique: true, // Assurer que l'email est unique
-      match: [/\S+@\S+\.\S+/, "L'email doit être valide"], // Validation d'email avec une expression régulière
+      required: [true, "L'email est requis"],
+      unique: true,
+      match: [/\S+@\S+\.\S+/, "L'email doit être valide"],
+      trim: true, // Retirer les espaces avant/après
     },
     adresse: {
       type: String,
-      required: [true, "L'adresse est requise"], // Message d'erreur personnalisé
-      maxlength: [500, "L'adresse ne peut pas dépasser 500 caractères"], // Limite de caractères pour l'adresse
+      required: [true, "L'adresse est requise"],
+      maxlength: [500, "L'adresse ne peut pas dépasser 500 caractères"],
     },
     telephone: {
       type: String,
-      required: [true, "Le numéro de téléphone est requis"], // Message d'erreur personnalisé
+      required: [true, "Le numéro de téléphone est requis"],
       match: [
         /^\d{10}$/,
         "Le numéro de téléphone doit être composé de 10 chiffres",
-      ], // Validation pour le format du téléphone
+      ],
+    },
+    role: {
+      type: String,
+      enum: [
+        "President",
+        "Tresorier",
+        "Commissaire aux comptes",
+        "Censeur",
+        "President Comité",
+        "Membre",
+      ],
+      default: "Membre", // Valeur par défaut
     },
     cotisations: [
       {
@@ -41,7 +56,7 @@ const MembreSchema = new Schema(
       },
     ],
   },
-  { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
+  { timestamps: true }
 );
 
 // Méthode statique pour récupérer les membres avec leurs cotisations
@@ -51,10 +66,13 @@ MembreSchema.statics.findWithCotisations = function () {
 
 // Middleware de validation avant la sauvegarde
 MembreSchema.pre("save", function (next) {
-  if (!this.email) {
-    return next(new Error("L'email est obligatoire"));
+  // Validation externe pour le membre
+  try {
+    validateMembreData(this); // Validation de l'objet membre
+    next(); // Continuer avec la sauvegarde
+  } catch (err) {
+    next(err); // Arrêter si validation échoue et passer l'erreur
   }
-  next();
 });
 
 module.exports = mongoose.model("Membre", MembreSchema);

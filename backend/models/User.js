@@ -1,29 +1,29 @@
-// backend/models/User.js
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { Schema } = mongoose;
+const { validateUserData } = require("../utils/validators"); // Import de la validation des données utilisateur
 
 // Schéma de l'utilisateur
 const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Le nom est requis"], // Message d'erreur personnalisé
-      minlength: [3, "Le nom doit contenir au moins 3 caractères"], // Validation pour la longueur du nom
+      required: [true, "Le nom est requis"],
+      minlength: [3, "Le nom doit contenir au moins 3 caractères"],
     },
     email: {
       type: String,
-      required: [true, "L'email est requis"], // Message d'erreur personnalisé
-      unique: true, // Email unique dans la base de données
-      match: [/\S+@\S+\.\S+/, "L'email doit être valide"], // Validation de l'email avec une expression régulière
+      required: [true, "L'email est requis"],
+      unique: true,
+      match: [/\S+@\S+\.\S+/, "L'email doit être valide"],
     },
     password: {
       type: String,
-      required: [true, "Le mot de passe est requis"], // Message d'erreur personnalisé
-      minlength: [6, "Le mot de passe doit contenir au moins 6 caractères"], // Validation pour la longueur du mot de passe
+      required: [true, "Le mot de passe est requis"],
+      minlength: [6, "Le mot de passe doit contenir au moins 6 caractères"],
     },
   },
-  { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
+  { timestamps: true }
 );
 
 // Méthode pour vérifier le mot de passe
@@ -44,9 +44,19 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Méthode statique pour récupérer un utilisateur par email (utile pour l'authentification)
+// Méthode statique pour récupérer un utilisateur par email
 userSchema.statics.findByEmail = function (email) {
   return this.findOne({ email });
 };
+
+// Middleware de validation avant la sauvegarde
+userSchema.pre("save", function (next) {
+  try {
+    validateUserData(this); // Validation externe des données de l'utilisateur
+    next(); // Si tout est valide, on continue avec la sauvegarde
+  } catch (err) {
+    next(err); // Si une erreur survient, elle est renvoyée
+  }
+});
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,6 +1,6 @@
-// backend/models/Pret.js
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { validatePretData } = require("../utils/validators"); // Import de la validation des données pour les prêts
 
 // Schéma du prêt
 const PretSchema = new Schema(
@@ -8,22 +8,22 @@ const PretSchema = new Schema(
     beneficiaire: {
       type: Schema.Types.ObjectId,
       ref: "Membre",
-      required: [true, "Le bénéficiaire est requis"], // Message d'erreur personnalisé
+      required: [true, "Le bénéficiaire est requis"],
     },
     montant: {
       type: Number,
-      required: [true, "Le montant du prêt est requis"], // Message d'erreur personnalisé
-      min: [0, "Le montant doit être positif"], // Validation pour garantir un montant positif
+      required: [true, "Le montant du prêt est requis"],
+      min: [0, "Le montant doit être positif"],
     },
     interet: {
       type: Number,
-      required: [true, "Le taux d'intérêt est requis"], // Message d'erreur personnalisé
-      min: [0, "Le taux d'intérêt doit être positif"], // Validation pour garantir un taux d'intérêt positif
+      required: [true, "Le taux d'intérêt est requis"],
+      min: [0, "Le taux d'intérêt doit être positif"],
     },
     duree: {
       type: Number,
-      required: [true, "La durée du prêt est requise"], // Message d'erreur personnalisé
-      min: [1, "La durée doit être d'au moins 1 mois"], // Validation pour garantir une durée minimale
+      required: [true, "La durée du prêt est requise"],
+      min: [1, "La durée doit être d'au moins 1 mois"],
     },
     dateDebut: {
       type: Date,
@@ -35,7 +35,7 @@ const PretSchema = new Schema(
       default: "actif",
     },
   },
-  { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
+  { timestamps: true }
 );
 
 // Méthode statique pour récupérer les prêts par bénéficiaire
@@ -43,14 +43,15 @@ PretSchema.statics.findByBeneficiaire = function (beneficiaireId) {
   return this.find({ beneficiaire: beneficiaireId });
 };
 
-// Middleware Mongoose pour vérifier les données avant la sauvegarde (exemple)
+// Middleware de validation avant la sauvegarde
 PretSchema.pre("save", function (next) {
-  if (this.montant < 0 || this.interet < 0 || this.duree < 1) {
-    return next(
-      new Error("Les valeurs du prêt doivent être positives et valides")
-    );
+  // Validation externe pour le prêt
+  try {
+    validatePretData(this); // Validation des données du prêt
+    next(); // Continuer avec la sauvegarde si tout est valide
+  } catch (err) {
+    next(err); // Arrêter le processus si une erreur survient
   }
-  next();
 });
 
 module.exports = mongoose.model("Pret", PretSchema);

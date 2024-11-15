@@ -1,7 +1,6 @@
-// backend/models/Aide.js
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const { validate } = require("../utils/validators"); // Utilisation de la fonction de validation générique si besoin
+const { validateAideData } = require("../utils/validators"); // Importer la fonction de validation externe
 
 // Schéma de l'Aide
 const AideSchema = new Schema(
@@ -33,26 +32,9 @@ const AideSchema = new Schema(
   { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
 );
 
-// Utilisation de méthodes statiques pour les fonctions courantes, comme la recherche d'aide par bénéficiaire
+// Méthode statique pour rechercher des aides par bénéficiaire
 AideSchema.statics.findByBeneficiaire = function (beneficiaireId) {
   return this.find({ beneficiaire: beneficiaireId });
 };
-
-// Validations supplémentaires ou méthodes de transformation si nécessaire
-AideSchema.methods.validateData = function () {
-  // Exemple de méthode pour valider ou transformer les données avant de les enregistrer
-  if (this.montant < 0) {
-    throw new Error("Le montant de l'aide ne peut pas être négatif");
-  }
-};
-
-// Middleware Mongoose pour les actions avant ou après la sauvegarde
-AideSchema.pre("save", function (next) {
-  // Exemple : Ajouter des logiques de validation avant d'enregistrer
-  if (!this.typeAide) {
-    throw new Error("Le type d'aide est obligatoire");
-  }
-  next();
-});
 
 module.exports = mongoose.model("Aide", AideSchema);

@@ -1,29 +1,30 @@
 // backend/middleware/errorHandler.js
 
-const errorHandler = (err, req, res, next) => {
-  // Afficher l'erreur dans la console pour le suivi
-  console.error(err.stack);
+const { validationResult } = require("express-validator");
 
-  // Erreur de validation (par exemple, si un champ n'est pas valide)
-  if (err.name === "ValidationError") {
+const handleValidationErrors = (req, res, next) => {
+  // Vérifie les erreurs de validation dans la requête
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // Si des erreurs sont présentes, renvoyer une réponse avec un statut 400
     return res.status(400).json({
-      message: "Erreur de validation des données",
-      details: err.errors,
+      message: "Données invalides",
+      errors: errors.array(),
     });
   }
+  next(); // Si aucune erreur, passer à la suite
+};
 
-  // Erreur d'authentification (token invalide ou expiré)
-  if (err.name === "UnauthorizedError") {
-    return res.status(401).json({
-      message: "Accès non autorisé, veuillez vérifier votre token",
-    });
-  }
-
-  // Erreur interne du serveur (erreur générique)
-  return res.status(500).json({
-    message: "Une erreur interne est survenue",
-    error: err.message || err,
+// Gestion globale des erreurs serveur
+const handleError = (err, req, res, next) => {
+  console.error(err.message); // Affiche l'erreur dans la console pour débogage
+  res.status(500).json({
+    message: "Erreur serveur interne",
+    error: err.message,
   });
 };
 
-module.exports = errorHandler;
+module.exports = {
+  handleValidationErrors,
+  handleError,
+};
