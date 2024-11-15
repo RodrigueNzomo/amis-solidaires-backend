@@ -1,7 +1,6 @@
-// backend/middleware/errorHandler.js
-
 const { validationResult } = require("express-validator");
 
+// Middleware de validation des données
 const handleValidationErrors = (req, res, next) => {
   // Vérifie les erreurs de validation dans la requête
   const errors = validationResult(req);
@@ -15,9 +14,9 @@ const handleValidationErrors = (req, res, next) => {
   next(); // Si aucune erreur, passer à la suite
 };
 
-// Gestion globale des erreurs serveur
-const handleError = (err, req, res, next) => {
-  console.error(err.message); // Affiche l'erreur dans la console pour débogage
+// Middleware de gestion des erreurs serveur
+const errorHandler = (err, req, res, next) => {
+  console.error(err.stack); // Affiche l'erreur dans la console pour débogage
   res.status(500).json({
     message: "Erreur serveur interne",
     error: err.message,
@@ -26,5 +25,5 @@ const handleError = (err, req, res, next) => {
 
 module.exports = {
   handleValidationErrors,
-  handleError,
+  errorHandler, // Renommé ici pour être plus cohérent
 };

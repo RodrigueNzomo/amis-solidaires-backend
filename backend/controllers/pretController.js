@@ -1,13 +1,29 @@
 // backend/controllers/pretController.js
 
-const Pret = require("../models/Pret");
+const Pret = require("../models/Pret"); // Assurez-vous que le modèle est bien importé
 
 // Ajouter un nouveau prêt
 const ajouterPret = async (req, res) => {
   try {
-    const pret = new Pret(req.body);
+    const { beneficiaire, montant, interet, duree } = req.body;
+    if (!beneficiaire || !montant || !interet || !duree) {
+      return res.status(400).json({ message: "Données du prêt manquantes." });
+    }
+
+    // Créer un nouveau prêt avec les données envoyées
+    const pret = new Pret({
+      beneficiaire,
+      montant,
+      interet,
+      duree,
+      statut: "actif", // Statut par défaut
+    });
+
+    // Sauvegarder le prêt dans la base de données
     await pret.save();
-    res.status(201).json(pret);
+
+    // Retourner la réponse
+    res.status(201).json({ message: "Prêt ajouté avec succès", pret });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Erreur du serveur");
@@ -18,7 +34,7 @@ const ajouterPret = async (req, res) => {
 const getPrets = async (req, res) => {
   try {
     const prets = await Pret.find();
-    res.json(prets);
+    res.status(200).json(prets);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Erreur du serveur");
@@ -34,7 +50,7 @@ const modifierPret = async (req, res) => {
     if (!pret) {
       return res.status(404).send("Prêt non trouvé");
     }
-    res.json(pret);
+    res.status(200).json({ message: "Prêt modifié avec succès", pret });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Erreur du serveur");
@@ -48,13 +64,14 @@ const supprimerPret = async (req, res) => {
     if (!pret) {
       return res.status(404).send("Prêt non trouvé");
     }
-    res.json({ message: "Prêt supprimé avec succès" });
+    res.status(200).json({ message: "Prêt supprimé avec succès" });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Erreur du serveur");
   }
 };
 
+// Assurez-vous que toutes les fonctions sont bien exportées
 module.exports = {
   ajouterPret,
   getPrets,

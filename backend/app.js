@@ -1,5 +1,3 @@
-// backend/app.js : Point d'entrée principal de l'application Node.js
-
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");

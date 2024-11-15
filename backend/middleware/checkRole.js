@@ -2,7 +2,7 @@ const Membre = require("../models/Membre");
 
 const checkRole = (roles) => {
   return async (req, res, next) => {
-    const { id: userId, role: userRole } = req.user; // L'ID de l'utilisateur et son rôle
+    const { id: userId } = req.user; // L'ID de l'utilisateur
 
     // Vérifie que l'utilisateur est authentifié
     if (!userId) {
@@ -10,10 +10,16 @@ const checkRole = (roles) => {
     }
 
     try {
-      const membre = await Membre.findById(userId).select("role"); // On récupère seulement le rôle
+      const membre = await Membre.findById(userId).select("role");
 
       if (!membre) {
         return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+
+      if (!membre.role) {
+        return res
+          .status(400)
+          .json({ message: "Rôle non défini pour cet utilisateur" });
       }
 
       // Vérification si l'utilisateur a un rôle valide parmi ceux autorisés
@@ -27,7 +33,7 @@ const checkRole = (roles) => {
       next();
     } catch (error) {
       // Gestion des erreurs serveur
-      console.error(error);
+      console.error("Erreur lors de la vérification du rôle:", error.message);
       res.status(500).json({
         message: "Erreur serveur lors de la vérification du rôle",
         error: error.message,

@@ -1,8 +1,10 @@
+// backend/routes/pretRoutes.js
+
 const express = require("express");
-const pretController = require("../controllers/pretController");
+const pretController = require("../controllers/pretController"); // Assurez-vous que le contrôleur est bien importé
 const authMiddleware = require("../middleware/authMiddleware");
-const { validatePretData } = require("../utils/validators"); // Import de la validation des données pour les prêts
-const { handleValidationErrors } = require("../middleware/errorHandler"); // Import pour la gestion des erreurs de validation
+const { validatePretData } = require("../utils/validators"); // Assurez-vous que cette validation est correctement importée
+const { handleValidationErrors } = require("../middleware/errorHandler"); // Assurez-vous que la gestion des erreurs est importée
 
 const router = express.Router();
 
@@ -14,7 +16,8 @@ router.post(
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const pret = await pretController.ajouterPret(req, res);
+      // Ajouter un prêt en appelant le contrôleur
+      const pret = await pretController.ajouterPret(req, res); // Envoie des données du prêt
       res.status(201).json({ message: "Prêt ajouté avec succès", pret });
     } catch (error) {
       res.status(400).json({ message: error.message });

@@ -1,7 +1,10 @@
-// backend/middleware/authMiddleware.js
-
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/config");
+
+// Fonction de vérification du token JWT
+const verifyToken = (token) => {
+  return jwt.verify(token, JWT_SECRET);
+};
 
 // Middleware pour vérifier l'authentification via JWT
 const authMiddleware = (req, res, next) => {
@@ -15,8 +18,8 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    // Vérifier la validité du token
-    const decoded = jwt.verify(token, JWT_SECRET);
+    // Vérification de la validité du token
+    const decoded = verifyToken(token);
     req.user = decoded; // Stocker les informations de l'utilisateur dans la requête
     next(); // Passer au prochain middleware ou à la route
   } catch (error) {
