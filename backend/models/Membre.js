@@ -1,7 +1,8 @@
-import mongoose, { model } from "mongoose";
-const { Schema } = mongoose;
-import _default from "../utils/validators.js";
-const { validateMembreData } = _default; // Import de la validation des données pour les membres
+// backend/models/Membre.js
+
+import mongoose from "mongoose";
+const { model, Schema } = mongoose;
+import { validateMembreData } from "../utils/validators.js"; // Importation correcte de la fonction de validation
 
 // Schéma du membre
 const MembreSchema = new Schema(
@@ -76,4 +77,5 @@ MembreSchema.pre("save", function (next) {
   }
 });
 
+// Exportation du modèle Membre
 export default model("Membre", MembreSchema);

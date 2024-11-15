@@ -1,4 +1,6 @@
-import mongoose, { model } from "mongoose";
+// backend/models/Cotisation.js
+
+import mongoose from "mongoose"; // Importation par défaut de mongoose
 const { Schema } = mongoose;
 import _default from "../utils/validators.js";
 const { validateCotisationData } = _default; // Import de la validation pour la cotisation
@@ -45,4 +47,7 @@ CotisationSchema.pre("save", function (next) {
   }
 });
 
-export default model("Cotisation", CotisationSchema);
+// Exportation du modèle Cotisation
+const Cotisation = mongoose.model("Cotisation", CotisationSchema);
+
+export default Cotisation;

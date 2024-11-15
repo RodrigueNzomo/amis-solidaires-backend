@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 import { validatePretData } from "../utils/validators.js"; // Import de la validation des données pour les prêts
 
@@ -54,4 +54,7 @@ PretSchema.pre("save", function (next) {
   }
 });
 
-export default model("Pret", PretSchema);
+// Création du modèle
+const Pret = mongoose.model("Pret", PretSchema);
+
+export default Pret;

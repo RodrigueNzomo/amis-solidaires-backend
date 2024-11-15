@@ -12,6 +12,15 @@ const handleValidationErrors = (req, res, next) => {
   next(); // Si aucune erreur, passer au prochain middleware ou à la route
 };
 
+// Validation générique pour le nombre
+const isValidNumber = (fieldName) => {
+  return body(fieldName)
+    .isNumeric()
+    .withMessage(`${fieldName} doit être un nombre valide.`)
+    .isFloat({ min: 0 })
+    .withMessage(`${fieldName} doit être supérieur ou égal à zéro.`);
+};
+
 // **Validation des données utilisateur**
 const validateEmail = body("email")
   .isEmail()
@@ -36,29 +45,21 @@ const validateAideData = [
   body("typeAide")
     .isIn(["alimentaire", "financière", "éducation", "santé", "autre"])
     .withMessage(
-      "Le type d'aide doit être l'un des suivants : alimentaire, financière, éducation, santé, autre."
+      "Le type d'aide doit être parmi : alimentaire, financière, éducation, santé, autre."
     )
     .notEmpty()
     .withMessage("Le type d'aide est requis."),
-  body("montant")
-    .isNumeric()
-    .withMessage("Le montant doit être un nombre valide.")
-    .isFloat({ min: 0 })
-    .withMessage("Le montant doit être supérieur ou égal à zéro."),
+  isValidNumber("montant"),
   body("description")
     .optional()
     .isLength({ max: 500 })
     .withMessage("La description ne peut pas dépasser 500 caractères."),
-  handleValidationErrors,
+  handleValidationErrors, // Appliquer la gestion des erreurs ici
 ];
 
 // **Validation pour la Cotisation**
 const validateCotisationData = [
-  body("montant")
-    .isNumeric()
-    .withMessage("Le montant doit être un nombre valide.")
-    .isFloat({ min: 0 })
-    .withMessage("Le montant de la cotisation doit être positif."),
+  isValidNumber("montant"),
   body("date")
     .isDate()
     .withMessage("La date de la cotisation doit être une date valide.")
@@ -69,10 +70,7 @@ const validateCotisationData = [
 
 // **Validation pour le Membre**
 const validateMembreData = [
-  body("email")
-    .isEmail()
-    .withMessage("L'email doit être un email valide.")
-    .normalizeEmail(),
+  validateEmail,
   body("name")
     .notEmpty()
     .withMessage("Le nom du membre est requis.")
@@ -88,11 +86,7 @@ const validateMembreData = [
 
 // **Validation pour le Paiement**
 const validatePaymentData = [
-  body("montant")
-    .isNumeric()
-    .withMessage("Le montant doit être un nombre valide.")
-    .isFloat({ min: 0 })
-    .withMessage("Le montant du paiement doit être supérieur ou égal à zéro."),
+  isValidNumber("montant"),
   body("datePaiement")
     .isDate()
     .withMessage("La date de paiement doit être une date valide.")
@@ -111,7 +105,8 @@ const validateIdParam = [
   handleValidationErrors,
 ];
 
-export default {
+export {
+  handleValidationErrors,
   validateEmail,
   validatePassword,
   validateAideData,

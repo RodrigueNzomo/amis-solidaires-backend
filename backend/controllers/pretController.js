@@ -1,10 +1,4 @@
-// backend/controllers/pretController.js
-
-import Pret, {
-  find,
-  findByIdAndUpdate,
-  findByIdAndDelete,
-} from "../models/Pret.js"; // Assurez-vous que le modèle est bien importé
+import Pret from "../models/Pret.js"; // Import du modèle Pret
 
 // Ajouter un nouveau prêt
 const ajouterPret = async (req, res) => {
@@ -37,7 +31,7 @@ const ajouterPret = async (req, res) => {
 // Récupérer tous les prêts
 const getPrets = async (req, res) => {
   try {
-    const prets = await find();
+    const prets = await Pret.find(); // Utiliser la méthode `find` du modèle Pret
     res.status(200).json(prets);
   } catch (err) {
     console.error(err.message);
@@ -48,9 +42,9 @@ const getPrets = async (req, res) => {
 // Modifier un prêt
 const modifierPret = async (req, res) => {
   try {
-    const pret = await findByIdAndUpdate(req.params.id, req.body, {
+    const pret = await Pret.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    }); // Utiliser la méthode `findByIdAndUpdate`
     if (!pret) {
       return res.status(404).send("Prêt non trouvé");
     }
@@ -64,7 +58,7 @@ const modifierPret = async (req, res) => {
 // Supprimer un prêt
 const supprimerPret = async (req, res) => {
   try {
-    const pret = await findByIdAndDelete(req.params.id);
+    const pret = await Pret.findByIdAndDelete(req.params.id); // Utiliser la méthode `findByIdAndDelete`
     if (!pret) {
       return res.status(404).send("Prêt non trouvé");
     }

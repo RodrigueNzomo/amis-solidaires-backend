@@ -1,17 +1,13 @@
 // backend/controllers/cotisationController.js
 
-import Cotisation, {
-  find,
-  findByIdAndUpdate,
-  findByIdAndDelete,
-} from "../models/Cotisation.js";
+import Cotisation from "../models/Cotisation.js";
 
 // Ajouter une cotisation
-const ajouterCotisation = async (data) => {
+export const ajouterCotisation = async (data) => {
   try {
-    const cotisation = new Cotisation(data);
-    await cotisation.save();
-    return cotisation;
+    const cotisation = new Cotisation(data); // Créer une nouvelle cotisation avec les données
+    await cotisation.save(); // Sauvegarder la cotisation dans la base de données
+    return cotisation; // Retourner la cotisation ajoutée
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur");
@@ -19,10 +15,10 @@ const ajouterCotisation = async (data) => {
 };
 
 // Récupérer toutes les cotisations
-const getCotisations = async () => {
+export const getCotisations = async () => {
   try {
-    const cotisations = await find();
-    return cotisations;
+    const cotisations = await Cotisation.find(); // Utiliser la méthode `find` sur le modèle Cotisation
+    return cotisations; // Retourner les cotisations
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur");
@@ -30,15 +26,15 @@ const getCotisations = async () => {
 };
 
 // Modifier une cotisation
-const modifierCotisation = async (id, data) => {
+export const modifierCotisation = async (id, data) => {
   try {
-    const cotisation = await findByIdAndUpdate(id, data, {
+    const cotisation = await Cotisation.findByIdAndUpdate(id, data, {
       new: true,
     });
     if (!cotisation) {
       throw new Error("Cotisation non trouvée");
     }
-    return cotisation;
+    return cotisation; // Retourner la cotisation modifiée
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur");
@@ -46,22 +42,15 @@ const modifierCotisation = async (id, data) => {
 };
 
 // Supprimer une cotisation
-const supprimerCotisation = async (id) => {
+export const supprimerCotisation = async (id) => {
   try {
-    const cotisation = await findByIdAndDelete(id);
+    const cotisation = await Cotisation.findByIdAndDelete(id);
     if (!cotisation) {
       throw new Error("Cotisation non trouvée");
     }
-    return cotisation;
+    return cotisation; // Retourner la cotisation supprimée
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur");
   }
-};
-
-export default {
-  ajouterCotisation,
-  getCotisations,
-  modifierCotisation,
-  supprimerCotisation,
 };

@@ -1,33 +1,23 @@
-import { verify } from "jsonwebtoken";
-import { JWT_SECRET } from "../config/config.js";
+// backend/middleware/authMiddleware.js
 
-// Fonction de vérification du token JWT
-const verifyToken = (token) => {
-  return verify(token, JWT_SECRET);
-};
+import { jwtSecret } from "../config/config.js"; // Importation de la clé JWT depuis le fichier config.js
+import jwt from "jsonwebtoken";
 
-// Middleware pour vérifier l'authentification via JWT
 const authMiddleware = (req, res, next) => {
-  // Récupérer le token depuis l'en-tête Authorization
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.header("x-auth-token");
 
-  // Si aucun token n'est fourni, renvoyer une erreur d'authentification
   if (!token) {
-    return res.status(403).json({ message: "Token manquant, accès interdit" });
+    return res
+      .status(401)
+      .json({ msg: "Pas d'authentification, veuillez vous connecter." });
   }
 
   try {
-    // Vérification de la validité du token
-    const decoded = verifyToken(token);
-    req.user = decoded; // Stocker les informations de l'utilisateur dans la requête
-    next(); // Passer au prochain middleware ou à la route
-  } catch (error) {
-    // Si le token est invalide ou expiré
-    console.error("Erreur de validation du token:", error.message);
-    return res
-      .status(401)
-      .json({ message: "Token invalide ou expiré, accès refusé" });
+    const decoded = jwt.verify(token, jwtSecret); // Utilisation de jwtSecret pour valider le token
+    req.user = decoded.user;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: "Token invalide." });
   }
 };
 

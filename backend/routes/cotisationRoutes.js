@@ -7,19 +7,9 @@ import {
   modifierCotisation,
   supprimerCotisation,
 } from "../controllers/cotisationController.js";
+import { validateCotisationData } from "../utils/validators.js"; // Importation du validateur
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs
 import authMiddleware from "../middleware/authMiddleware.js";
-// Remplacer l'importation par celle-ci, sans 'default'
-// import {
-//   validateMembreData,
-//   validateCotisationData,
-//   validatePretData,
-//   validateAideData,
-//   validatePaymentData,
-// } from "../utils/validators.js";
-
-import { validateCotisationData } from "../utils/validators.js";
-
-import { handleValidationErrors } from "../middleware/errorHandler.js";
 
 const router = Router();
 
@@ -27,12 +17,11 @@ const router = Router();
 router.post(
   "/ajouter",
   authMiddleware,
-  validateCotisationData,
-  handleValidationErrors,
+  validateCotisationData, // Utilisation de la validation des données de cotisation
+  handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      // Envoie directement req.body au contrôleur sans req et res
-      const cotisation = await ajouterCotisation(req.body);
+      const cotisation = await ajouterCotisation(req.body); // Ajouter la cotisation
       res
         .status(201)
         .json({ message: "Cotisation ajoutée avec succès", cotisation });
@@ -63,7 +52,7 @@ router.put(
   "/:id",
   authMiddleware,
   validateCotisationData,
-  handleValidationErrors,
+  handleValidationErrors, // Validation et gestion des erreurs
   async (req, res) => {
     try {
       const cotisation = await modifierCotisation(req.params.id, req.body);

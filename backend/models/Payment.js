@@ -12,6 +12,7 @@ const paymentSchema = new Schema(
     datePaiement: {
       type: Date,
       required: [true, "La date de paiement est requise"],
+      default: Date.now, // Définit la date du paiement à la date actuelle si elle n'est pas précisée
     },
     membreId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +22,7 @@ const paymentSchema = new Schema(
     description: {
       type: String,
       maxlength: [500, "La description ne peut pas dépasser 500 caractères"],
-      default: "",
+      default: "", // Valeur par défaut si aucune description n'est fournie
     },
   },
   { timestamps: true } // Ajouter les timestamps pour créer et modifier automatiquement les champs createdAt et updatedAt
@@ -29,19 +30,17 @@ const paymentSchema = new Schema(
 
 // Middleware de validation (si nécessaire)
 paymentSchema.pre("save", function (next) {
-  // Vous pouvez ajouter une validation supplémentaire ou un traitement avant la sauvegarde
-  // Exemple: valider que le montant n'est pas négatif ou vérifier des conditions supplémentaires
   if (this.montant < 0) {
     return next(new Error("Le montant ne peut pas être inférieur à zéro"));
   }
   next();
 });
 
-// Méthodes statiques et instance (si nécessaire)
-// Exemple: méthode pour récupérer les paiements d'un membre particulier
+// Méthode statique pour récupérer les paiements d'un membre particulier
 paymentSchema.statics.findByMember = function (memberId) {
-  return this.find({ membreId: memberId });
+  return this.find({ membreId: memberId }).exec(); // Ajout de `exec()` pour retourner une promesse directement
 };
 
 // Export du modèle Payment
-export default mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.model("Payment", paymentSchema);
+export default Payment;

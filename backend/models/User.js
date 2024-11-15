@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose"; // Importation par défaut de mongoose
 import { compare, genSalt, hash } from "bcryptjs";
 const { Schema } = mongoose;
 import { validateUserData } from "../utils/validators.js"; // Importation correcte de la fonction de validation
@@ -59,4 +59,7 @@ userSchema.pre("save", function (next) {
   }
 });
 
-export default model("User", userSchema);
+// Exportation du modèle User
+const User = mongoose.model("User", userSchema);
+
+export default User;
