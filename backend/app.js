@@ -12,17 +12,19 @@ const cotisationRoutes = require("./routes/cotisationRoutes");
 const pretRoutes = require("./routes/pretRoutes");
 const aideRoutes = require("./routes/aideRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const roleRoutes = require("./routes/roleRoutes"); // Importation des routes liées aux rôles
 
 // Import des middlewares
 const errorHandler = require("./middleware/errorHandler"); // Middleware pour la gestion des erreurs
-const {
-  validateAide,
-  validateCotisation,
-  validateMembre,
-  validatePret,
-  validatePayment,
-} = require("./middleware/inputValidator"); // Validation des données
 const authMiddleware = require("./middleware/authMiddleware"); // Middleware d'authentification
+
+// Middleware pour la validation des données
+const validateMembre = require("./middleware/inputValidator").validateMembre;
+const validateCotisation =
+  require("./middleware/inputValidator").validateCotisation;
+const validatePret = require("./middleware/inputValidator").validatePret;
+const validateAide = require("./middleware/inputValidator").validateAide;
+const validatePayment = require("./middleware/inputValidator").validatePayment;
 
 // Initialisation de l'application
 dotenv.config();
@@ -47,6 +49,7 @@ app.use(
 app.use("/api/prets", authMiddleware, validatePret, pretRoutes); // Authentification et validation pour les prêts
 app.use("/api/aides", authMiddleware, validateAide, aideRoutes); // Authentification et validation pour les aides
 app.use("/api/payments", authMiddleware, validatePayment, paymentRoutes); // Authentification et validation pour les paiements
+app.use("/api/roles", authMiddleware, roleRoutes); // Routes liées aux rôles avec authentification
 
 // Middleware pour la gestion des erreurs
 app.use(errorHandler); // Gestion des erreurs à la fin des routes
