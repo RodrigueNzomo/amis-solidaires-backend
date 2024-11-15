@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "description": "Backend for Amis Solidaires project",
   "main": "app.js",
-  "scripts": {
+  "type": "module",  
+    "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "jest --coverage --runInBand --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit"
   },
-  "author": "nzogang nzomo rodrigue",
-  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
