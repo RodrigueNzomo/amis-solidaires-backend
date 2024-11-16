@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
-import { validatePretData } from "../utils/validators.js"; // Import de la validation des données pour les prêts
+const { model, Schema } = mongoose;
+
+import { validatePretData } from "../utils/validators.js"; // Validation des données pour les prêts
 
 // Schéma du prêt
 const PretSchema = new Schema(
@@ -44,13 +45,13 @@ PretSchema.statics.findByBeneficiaire = function (beneficiaireId) {
 };
 
 // Middleware de validation avant la sauvegarde
-PretSchema.pre("save", function (next) {
-  // Validation externe pour le prêt
+PretSchema.pre("save", async function (next) {
   try {
-    validatePretData(this); // Validation des données du prêt
+    // Appliquer la validation externe (assurez-vous que validatePretData est bien une fonction asynchrone)
+    await validatePretData(this); // Vérification des données avant de poursuivre
     next(); // Continuer avec la sauvegarde si tout est valide
   } catch (err) {
-    next(err); // Arrêter le processus si une erreur survient
+    next(err); // Passer l'erreur au middleware d'erreur global si la validation échoue
   }
 });
 

@@ -1,6 +1,8 @@
-import mongoose from "mongoose"; // Importation par défaut de mongoose
+import mongoose from "mongoose";
+const { model, Schema } = mongoose;
+
 import { compare, genSalt, hash } from "bcryptjs";
-const { Schema } = mongoose;
+
 import { validateUserData } from "../utils/validators.js"; // Importation correcte de la fonction de validation
 
 // Schéma de l'utilisateur

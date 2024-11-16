@@ -55,6 +55,7 @@ const validateAideData = [
     .optional()
     .isLength({ max: 500 })
     .withMessage("La description ne peut pas dépasser 500 caractères."),
+  handleValidationErrors, // Appliquer la gestion des erreurs ici
 ];
 
 // **Validation pour la Cotisation**
@@ -65,6 +66,7 @@ const validateCotisationData = [
     .withMessage("La date de la cotisation doit être une date valide.")
     .notEmpty()
     .withMessage("La date de la cotisation est obligatoire."),
+  handleValidationErrors,
 ];
 
 // **Validation pour le Membre**
@@ -80,6 +82,7 @@ const validateMembreData = [
     .withMessage("La date de naissance doit être valide.")
     .notEmpty()
     .withMessage("La date de naissance est requise."),
+  handleValidationErrors,
 ];
 
 // **Validation pour le Paiement**
@@ -90,6 +93,7 @@ const validatePaymentData = [
     .withMessage("La date de paiement doit être une date valide.")
     .notEmpty()
     .withMessage("La date du paiement est requise."),
+  handleValidationErrors,
 ];
 
 // **Validation pour un ID générique (utilisé dans plusieurs routes)**
@@ -99,6 +103,23 @@ const validateIdParam = [
     .withMessage("L'ID fourni est invalide.")
     .notEmpty()
     .withMessage("L'ID est requis."),
+  handleValidationErrors,
+];
+
+// **Validation pour le Prêt**
+const validatePretData = [
+  isValidNumber("montant"),
+  isValidNumber("interet"),
+  isValidNumber("duree"),
+  body("dateDebut")
+    .isDate()
+    .withMessage("La date de début du prêt doit être une date valide.")
+    .notEmpty()
+    .withMessage("La date de début du prêt est requise."),
+  body("statut")
+    .isIn(["actif", "remboursé"])
+    .withMessage("Le statut doit être 'actif' ou 'remboursé'."),
+  handleValidationErrors,
 ];
 
 export {
@@ -110,4 +131,5 @@ export {
   validateMembreData,
   validatePaymentData,
   validateIdParam,
+  validatePretData,
 };

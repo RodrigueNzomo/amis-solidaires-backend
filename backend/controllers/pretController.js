@@ -1,14 +1,13 @@
 import Pret from "../models/Pret.js"; // Import du modèle Pret
 
 // Ajouter un nouveau prêt
-const ajouterPret = async (req, res) => {
-  try {
-    const { beneficiaire, montant, interet, duree } = req.body;
-    if (!beneficiaire || !montant || !interet || !duree) {
-      return res.status(400).json({ message: "Données du prêt manquantes." });
-    }
+const ajouterPret = async (pretData) => {
+  const { beneficiaire, montant, interet, duree } = pretData;
+  if (!beneficiaire || !montant || !interet || !duree) {
+    throw new Error("Données du prêt manquantes.");
+  }
 
-    // Créer un nouveau prêt avec les données envoyées
+  try {
     const pret = new Pret({
       beneficiaire,
       montant,
@@ -17,62 +16,52 @@ const ajouterPret = async (req, res) => {
       statut: "actif", // Statut par défaut
     });
 
-    // Sauvegarder le prêt dans la base de données
     await pret.save();
-
-    // Retourner la réponse
-    res.status(201).json({ message: "Prêt ajouté avec succès", pret });
+    return pret; // Retourner l'objet prêt ajouté
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur lors de l'ajout du prêt");
   }
 };
 
 // Récupérer tous les prêts
-const getPrets = async (req, res) => {
+const getPrets = async () => {
   try {
-    const prets = await Pret.find(); // Utiliser la méthode `find` du modèle Pret
-    res.status(200).json(prets);
+    const prets = await Pret.find();
+    return prets; // Retourner les prêts récupérés
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur lors de la récupération des prêts");
   }
 };
 
 // Modifier un prêt
-const modifierPret = async (req, res) => {
+const modifierPret = async (id, pretData) => {
   try {
-    const pret = await Pret.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    }); // Utiliser la méthode `findByIdAndUpdate`
+    const pret = await Pret.findByIdAndUpdate(id, pretData, { new: true });
     if (!pret) {
-      return res.status(404).send("Prêt non trouvé");
+      throw new Error("Prêt non trouvé");
     }
-    res.status(200).json({ message: "Prêt modifié avec succès", pret });
+    return pret; // Retourner le prêt modifié
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur lors de la modification du prêt");
   }
 };
 
 // Supprimer un prêt
-const supprimerPret = async (req, res) => {
+const supprimerPret = async (id) => {
   try {
-    const pret = await Pret.findByIdAndDelete(req.params.id); // Utiliser la méthode `findByIdAndDelete`
+    const pret = await Pret.findByIdAndDelete(id);
     if (!pret) {
-      return res.status(404).send("Prêt non trouvé");
+      throw new Error("Prêt non trouvé");
     }
-    res.status(200).json({ message: "Prêt supprimé avec succès" });
+    return pret; // Retourner le prêt supprimé
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Erreur du serveur");
+    throw new Error("Erreur du serveur lors de la suppression du prêt");
   }
 };
 
-// Assurez-vous que toutes les fonctions sont bien exportées
-export default {
-  ajouterPret,
-  getPrets,
-  modifierPret,
-  supprimerPret,
-};
+// Exporter les fonctions
+export { ajouterPret, getPrets, modifierPret, supprimerPret };

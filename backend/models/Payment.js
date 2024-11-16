@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
+const { model, Schema } = mongoose;
 
 // Schéma du paiement
 const paymentSchema = new Schema(

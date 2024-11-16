@@ -1,7 +1,6 @@
-// backend/models/Cotisation.js
+import mongoose from "mongoose";
+const { model, Schema } = mongoose;
 
-import mongoose from "mongoose"; // Importation par défaut de mongoose
-const { Schema } = mongoose;
 import { validateCotisationData } from "../utils/validators.js"; // Import correct de la validation pour la cotisation
 
 // Schéma de la cotisation

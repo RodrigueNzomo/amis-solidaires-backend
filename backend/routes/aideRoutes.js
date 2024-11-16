@@ -2,28 +2,19 @@
 
 import { Router } from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
-// Remplacer l'importation par celle-ci, sans 'default'
-// import {
-//   validateMembreData,
-//   validateCotisationData,
-//   validatePretData,
-//   validateAideData,
-//   validatePaymentData,
-// } from "../utils/validators.js";
-
-import { validateAideDatData } from "../utils/validators.js";
-// Validation des données d'Aide
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import de la gestion des erreurs de validation
-import { createAide, getAllAides } from "../controllers/aideController.js"; // Import du contrôleur pour Aide
+// Importation correcte de la validation des données d'Aide
+import { validateAideData } from "../utils/validators.js"; // Correct nom pour la fonction de validation
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs
+import { createAide, getAllAides } from "../controllers/aideController.js"; // Contrôleur pour gérer l'Aide
 
 const router = Router();
 
 // Ajouter une aide (route protégée par l'authentification et la validation des données)
 router.post(
   "/",
-  authMiddleware,
-  validateAideData,
-  handleValidationErrors,
+  authMiddleware, // Vérification de l'authentification
+  validateAideData, // Validation des données de l'Aide
+  handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
       const aide = await createAide(req.body); // Passe uniquement req.body au contrôleur

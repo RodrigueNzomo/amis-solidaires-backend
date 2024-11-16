@@ -1,7 +1,7 @@
-import mongoose, { model } from "mongoose";
-const { Schema } = mongoose;
-import _default from "../utils/validators.js";
-const { validateAideData } = _default; // Importer la fonction de validation externe
+import mongoose from "mongoose";
+const { model, Schema } = mongoose;
+
+import { validateAideData } from "../utils/validators.js"; // Importation correcte de la validation
 
 // Schéma de l'Aide
 const AideSchema = new Schema(
@@ -9,17 +9,17 @@ const AideSchema = new Schema(
     beneficiaire: {
       type: Schema.Types.ObjectId,
       ref: "Membre",
-      required: [true, "Le bénéficiaire est requis"], // Message d'erreur personnalisé
+      required: [true, "Le bénéficiaire est requis"],
     },
     typeAide: {
       type: String,
-      required: [true, "Le type d'aide est requis"], // Message d'erreur personnalisé
-      enum: ["alimentaire", "financière", "éducation", "santé", "autre"], // Enumération pour limiter les valeurs possibles
+      required: [true, "Le type d'aide est requis"],
+      enum: ["alimentaire", "financière", "éducation", "santé", "autre"],
     },
     montant: {
       type: Number,
-      required: [true, "Le montant est requis"], // Message d'erreur personnalisé
-      min: [0, "Le montant doit être positif"], // Validation pour garantir un montant positif
+      required: [true, "Le montant est requis"],
+      min: [0, "Le montant doit être positif"],
     },
     date: {
       type: Date,
@@ -27,15 +27,27 @@ const AideSchema = new Schema(
     },
     description: {
       type: String,
-      maxlength: [500, "La description ne peut pas dépasser 500 caractères"], // Limite de caractères
+      maxlength: [500, "La description ne peut pas dépasser 500 caractères"],
     },
   },
-  { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
+  { timestamps: true }
 );
 
 // Méthode statique pour rechercher des aides par bénéficiaire
 AideSchema.statics.findByBeneficiaire = function (beneficiaireId) {
   return this.find({ beneficiaire: beneficiaireId });
 };
+
+// Middleware de validation avant la sauvegarde de l'Aide
+AideSchema.pre("save", async function (next) {
+  try {
+    // Validation des données de l'instance
+    await validateAideData(this);
+    next(); // Si la validation passe, continue avec la sauvegarde
+  } catch (err) {
+    // Si la validation échoue, renvoyer une erreur
+    next(new Error(`Validation échouée : ${err.message}`));
+  }
+});
 
 export default model("Aide", AideSchema);
