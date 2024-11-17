@@ -22,7 +22,10 @@ import {
 } from "./utils/validators.js";
 
 // Import des middlewares
-import errorHandler from "./middleware/errorHandlerMiddleware.js"; // Middleware pour la gestion des erreurs
+import {
+  errorHandler,
+  handleValidationErrors,
+} from "./middleware/errorHandlerMiddleware.js"; // Importation correcte
 import authMiddleware from "./middleware/authMiddleware.js"; // Middleware d'authentification
 
 // Initialisation de l'application

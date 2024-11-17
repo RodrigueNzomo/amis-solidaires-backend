@@ -4,7 +4,7 @@ import { MONGO_URI } from "./config.js"; // Importation de la configuration Mong
 // Fonction pour se connecter à la base de données MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(MONGO_URI, {
+    await mongoose.connect("mongodb://127.0.0.1:27017/AmisSolidaires", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
