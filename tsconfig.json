@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                               // Cibler une version moderne d'ES
+    "module": "ESNext",                               // Utiliser le module ESNext pour la compatibilité avec les imports/export
+    "moduleResolution": "node",                       // Résolution des modules comme en Node.js
+    "strict": true,                                   // Activer toutes les vérifications strictes
+    "esModuleInterop": true,                          // Assurer la compatibilité avec CommonJS
+    "skipLibCheck": true,                             // Ignorer les vérifications de types des fichiers de lib
+    "forceConsistentCasingInFileNames": true,         // S'assurer que les noms de fichiers sont consistants
+    "outDir": "./dist",                               // Sortie des fichiers compilés
+    "rootDir": "./src",                               // Dossier source des fichiers TS
+    "allowJs": true,                                  // Permettre d'utiliser des fichiers JS avec TypeScript
+    "noImplicitAny": false                            // Désactiver les erreurs pour les types implicites "any"
+  },
+  "include": ["src/**/*"],                            // Inclure tous les fichiers source dans le dossier src
+  "exclude": ["node_modules", "dist"]                 // Exclure les fichiers compilés et node_modules
+}

@@ -1,7 +1,7 @@
 // backend/config/jwt.js
 
 import { sign, verify } from "jsonwebtoken";
-import { JWT_SECRET, JWT_EXPIRATION } from "./config";
+import { JWT_SECRET, JWT_EXPIRATION } from "./config.js"; // Correction ici
 
 // Fonction pour générer un token JWT
 const generateToken = (userId) => {
@@ -10,7 +10,11 @@ const generateToken = (userId) => {
 
 // Fonction pour vérifier un token JWT
 const verifyToken = (token) => {
-  return verify(token, JWT_SECRET);
+  try {
+    return verify(token, JWT_SECRET);
+  } catch (error) {
+    throw new Error("Token invalide ou expiré");
+  }
 };
 
 export default { generateToken, verifyToken };

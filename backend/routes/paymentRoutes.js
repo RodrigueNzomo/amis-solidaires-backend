@@ -1,10 +1,5 @@
 import { Router } from "express";
-import {
-  ajouterPaiement,
-  getPayments,
-  modifierPaiement,
-  supprimerPaiement,
-} from "../controllers/paymentController.js";
+
 import authMiddleware from "../middleware/authMiddleware.js";
 import { validatePaymentData } from "../utils/validators.js"; // Import de la validation des données pour les paiements
 import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import pour la gestion des erreurs de validation

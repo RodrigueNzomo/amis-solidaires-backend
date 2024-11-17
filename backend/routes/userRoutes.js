@@ -2,14 +2,6 @@
 import { Router } from "express";
 import { getUserDetails, getAllUsers } from "../controllers/userController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-// Remplacer l'importation par celle-ci, sans 'default'
-// import {
-//   validateMembreData,
-//   validateCotisationData,
-//   validatePretData,
-//   validateAideData,
-//   validatePaymentData,
-// } from "../utils/validators.js";
 
 import { validateIdParam } from "../utils/validators.js"; // Import de la validation de l'ID
 import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import pour la gestion des erreurs de validation
