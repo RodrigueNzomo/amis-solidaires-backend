@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
 import connectDB from "./config/db.js"; // Connexion à la base de données MongoDB
-import { port } from "./config/config.js"; // Importation du port depuis config
+import { PORT } from "./config/config.js"; // Importation du port depuis config
 // Import des routes
 import membreRoutes from "./routes/membreRoutes.js";
 import cotisationRoutes from "./routes/cotisationRoutes.js";
@@ -22,7 +22,7 @@ import {
 } from "./utils/validators.js";
 
 // Import des middlewares
-import errorHandler from "./middleware/errorHandler.js"; // Middleware pour la gestion des erreurs
+import errorHandler from "./middleware/errorHandlerMiddleware.js"; // Middleware pour la gestion des erreurs
 import authMiddleware from "./middleware/authMiddleware.js"; // Middleware d'authentification
 
 // Initialisation de l'application
@@ -54,7 +54,6 @@ app.use("/api/roles", authMiddleware, roleRoutes);
 app.use(errorHandler); // Gestion des erreurs à la fin des routes
 
 // Démarrage du serveur
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });

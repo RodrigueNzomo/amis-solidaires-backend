@@ -32,3 +32,25 @@ export const assignRole = async (membreId, role) => {
 export const getAllMembers = async () => {
   return await Membre.find();
 };
+// backend/controllers/roleController.js
+
+// Exemple de la fonction getMemberById
+export const getMemberById = async (id) => {
+  try {
+    const membre = await Membre.findById(id); // Assurez-vous que vous avez importé le modèle Membre
+    if (!membre) {
+      throw new Error("Membre non trouvé");
+    }
+    return membre;
+  } catch (error) {
+    throw new Error(
+      `Erreur lors de la récupération du membre: ${error.message}`
+    );
+  }
+};
+
+// Exportation de toutes les fonctions nécessaires
+export default {
+  getMemberById,
+  // Ajoutez d'autres exports pour les autres fonctions du contrôleur
+};

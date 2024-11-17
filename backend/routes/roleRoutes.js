@@ -1,5 +1,4 @@
 import { Router } from "express";
-import checkRole from "../middleware/checkRoleMiddleware.js"; // Vérification des rôles
 import {
   assignRole,
   getAllMembers,
@@ -7,7 +6,8 @@ import {
   getMemberRole,
   updateMemberRole,
   removeRoleFromMember,
-} from "../controllers/roleController.js";
+} from "../controllers/roleController.js"; // Assurez-vous d'importer toutes les fonctions nécessaires
+import checkRole from "../middleware/checkRoleMiddleware.js"; // Vérification des rôles
 
 const router = Router();
 

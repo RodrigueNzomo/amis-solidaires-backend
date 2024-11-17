@@ -7,7 +7,7 @@ import {
 } from "../controllers/pretController.js"; // Contrôleur pour gérer les prêts
 import authMiddleware from "../middleware/authMiddleware.js"; // Vérification de l'authentification
 import { validatePretData } from "../utils/validators.js"; // Validation des données de prêt
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
+import { handleValidationErrors } from "../middleware/errorHandlerMiddleware.js"; // Gestion des erreurs de validation
 
 const router = Router();
 

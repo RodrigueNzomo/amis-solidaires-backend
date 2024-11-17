@@ -64,10 +64,5 @@ const deleteAide = async (id) => {
   }
 };
 
-export default {
-  createAide,
-  getAllAides,
-  getAideById,
-  updateAide,
-  deleteAide,
-}; // Exportation des méthodes pour les utiliser dans les routes
+// Exportation des méthodes pour les utiliser dans les routes
+export { createAide, getAllAides, getAideById, updateAide, deleteAide };

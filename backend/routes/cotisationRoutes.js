@@ -6,7 +6,7 @@ import {
   supprimerCotisation,
 } from "../controllers/cotisationController.js";
 import { validateCotisationData } from "../utils/validators.js"; // Importation du validateur
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
+import { handleValidationErrors } from "../middleware/errorHandlerMiddleware.js"; // Gestion des erreurs de validation
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = Router();

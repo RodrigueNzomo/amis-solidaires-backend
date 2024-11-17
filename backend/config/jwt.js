@@ -1,4 +1,7 @@
-import { sign, verify } from "jsonwebtoken"; // Importation des méthodes sign et verify de jsonwebtoken
+import jwt from "jsonwebtoken"; // Utilisation de l'export par défaut
+
+const { sign, verify } = jwt; // Désestructuration pour obtenir sign et verify
+
 import { JWT_SECRET, JWT_EXPIRATION } from "./config.js"; // Importation des paramètres JWT
 
 // Fonction pour générer un token JWT
@@ -15,4 +18,4 @@ const verifyToken = (token) => {
   }
 };
 
-export default { generateToken, verifyToken }; // Exportation des fonctions pour les utiliser ailleurs
+export { generateToken, verifyToken }; // Exportation des fonctions pour les utiliser ailleurs

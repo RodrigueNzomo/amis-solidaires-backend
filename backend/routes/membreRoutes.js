@@ -5,7 +5,7 @@ import {
   modifierMembre,
   supprimerMembre,
 } from "../controllers/membreController.js"; // Contrôleur pour gérer le Membre
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
+import { handleValidationErrors } from "../middleware/errorHandlerMiddleware.js"; // Gestion des erreurs de validation
 import { validateMembreData } from "../utils/validators.js"; // Validation des données de Membre
 import authMiddleware from "../middleware/authMiddleware.js";
 
