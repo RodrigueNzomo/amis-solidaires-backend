@@ -1,4 +1,5 @@
-import { config } from "dotenv";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 config(); // Charge les variables d'environnement à partir du fichier .env
 
