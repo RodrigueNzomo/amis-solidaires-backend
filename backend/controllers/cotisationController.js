@@ -1,6 +1,4 @@
-// backend/controllers/cotisationController.js
-
-import Cotisation from "../models/Cotisation.js";
+import Cotisation from "../models/Cotisation.js"; // Import du modèle Cotisation
 
 // Ajouter une cotisation
 export const ajouterCotisation = async (data) => {
@@ -17,8 +15,8 @@ export const ajouterCotisation = async (data) => {
 // Récupérer toutes les cotisations
 export const getCotisations = async () => {
   try {
-    const cotisations = await Cotisation.find(); // Utiliser la méthode `find` sur le modèle Cotisation
-    return cotisations; // Retourner les cotisations
+    const cotisations = await Cotisation.find(); // Utiliser la méthode `find` pour récupérer toutes les cotisations
+    return cotisations; // Retourner toutes les cotisations
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur");

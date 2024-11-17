@@ -4,21 +4,22 @@ import {
   getPrets,
   modifierPret,
   supprimerPret,
-} from "../controllers/pretController.js"; // Assurez-vous que le chemin est correct
-import authMiddleware from "../middleware/authMiddleware.js";
-import { validatePretData } from "../utils/validators.js";
-import { handleValidationErrors } from "../middleware/errorHandler.js";
+} from "../controllers/pretController.js"; // Contrôleur pour gérer les prêts
+import authMiddleware from "../middleware/authMiddleware.js"; // Vérification de l'authentification
+import { validatePretData } from "../utils/validators.js"; // Validation des données de prêt
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
 
 const router = Router();
 
+// Ajouter un prêt
 router.post(
   "/ajouter",
-  authMiddleware,
-  validatePretData,
-  handleValidationErrors,
+  authMiddleware, // Vérification de l'authentification
+  validatePretData, // Validation des données de prêt
+  handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
-      const pret = await ajouterPret(req.body);
+      const pret = await ajouterPret(req.body); // Ajouter le prêt
       res.status(201).json({ message: "Prêt ajouté avec succès", pret });
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -26,6 +27,7 @@ router.post(
   }
 );
 
+// Récupérer tous les prêts
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const prets = await getPrets();
@@ -41,11 +43,12 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
+// Modifier un prêt
 router.put(
   "/:id",
-  authMiddleware,
-  validatePretData,
-  handleValidationErrors,
+  authMiddleware, // Vérification de l'authentification
+  validatePretData, // Validation des données de prêt
+  handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {
     try {
       const pret = await modifierPret(req.params.id, req.body);
@@ -62,6 +65,7 @@ router.put(
   }
 );
 
+// Supprimer un prêt
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const pret = await supprimerPret(req.params.id);

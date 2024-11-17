@@ -1,22 +1,19 @@
 // backend/services/notificationService.js
+import { sendEmail } from "./emailService.js"; // Utilisation du service email pour envoyer des notifications
 
-// Fonction pour envoyer une notification par email (pour simplification)
-const sendNotification = async (to, subject, message) => {
+// Fonction pour envoyer une notification à un utilisateur
+const sendNotification = async (userEmail, notificationMessage) => {
+  const subject = "Notification importante";
+  const text = notificationMessage;
+  const html = `<p>${notificationMessage}</p>`; // HTML formaté pour l'email
+
   try {
-    // Utilisation du service email pour envoyer une notification par email
-    // On peut étendre ce service pour gérer d'autres types de notifications
-    const emailService = require("./emailService.js");
-    const text = `Notification: ${message}`;
-    await emailService.sendEmail(to, subject, text);
-    console.log(`Notification envoyée à ${to}`);
+    const emailResult = await sendEmail(userEmail, subject, text, html);
+    return { success: true, message: "Notification envoyée avec succès" };
   } catch (error) {
-    console.error(
-      "Erreur lors de l'envoi de la notification : " + error.message
-    );
+    console.error("Erreur lors de l'envoi de la notification:", error);
     throw new Error("Erreur lors de l'envoi de la notification");
   }
 };
 
-export default {
-  sendNotification,
-};
+export { sendNotification };

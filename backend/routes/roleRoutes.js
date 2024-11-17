@@ -1,6 +1,5 @@
-// backend/routes/roleRoutes.js
 import { Router } from "express";
-import checkRole from "../middleware/checkRole.js";
+import checkRole from "../middleware/checkRoleMiddleware.js"; // Vérification des rôles
 import {
   assignRole,
   getAllMembers,

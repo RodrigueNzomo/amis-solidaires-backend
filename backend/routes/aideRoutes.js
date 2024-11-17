@@ -1,10 +1,7 @@
-// backend/routes/aideRoutes.js
-
 import { Router } from "express";
-import authMiddleware from "../middleware/authMiddleware.js";
-// Importation correcte de la validation des données d'Aide
-import { validateAideData } from "../utils/validators.js"; // Correct nom pour la fonction de validation
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs
+import authMiddleware from "../middleware/authMiddleware.js"; // Vérification de l'authentification
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
+import { validateAideData } from "../utils/validators.js"; // Validation des données de l'Aide
 import { createAide, getAllAides } from "../controllers/aideController.js"; // Contrôleur pour gérer l'Aide
 
 const router = Router();

@@ -1,5 +1,3 @@
-// backend/routes/cotisationRoutes.js
-
 import { Router } from "express";
 import {
   ajouterCotisation,
@@ -8,7 +6,7 @@ import {
   supprimerCotisation,
 } from "../controllers/cotisationController.js";
 import { validateCotisationData } from "../utils/validators.js"; // Importation du validateur
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs
+import { handleValidationErrors } from "../middleware/errorHandler.js"; // Gestion des erreurs de validation
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = Router();
@@ -16,7 +14,7 @@ const router = Router();
 // Ajouter une cotisation
 router.post(
   "/ajouter",
-  authMiddleware,
+  authMiddleware, // Vérification de l'authentification
   validateCotisationData, // Utilisation de la validation des données de cotisation
   handleValidationErrors, // Gestion des erreurs de validation
   async (req, res) => {

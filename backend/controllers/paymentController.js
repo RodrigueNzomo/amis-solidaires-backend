@@ -1,11 +1,10 @@
-// backend/controllers/paymentController.js
-import Payment from "../models/Payment.js";
+import Payment from "../models/Payment.js"; // Import du modèle Payment
 
 // Ajouter un paiement
-const ajouterPaiement = async (data) => {
+export const ajouterPaiement = async (data) => {
   try {
-    const paiement = new Payment(data);
-    await paiement.save();
+    const paiement = new Payment(data); // Créer une nouvelle instance de Payment avec les données
+    await paiement.save(); // Sauvegarder le paiement dans la base de données
     return paiement;
   } catch (err) {
     console.error(err.message);
@@ -14,9 +13,9 @@ const ajouterPaiement = async (data) => {
 };
 
 // Récupérer tous les paiements
-const getPaiements = async () => {
+export const getPaiements = async () => {
   try {
-    const paiements = await Payment.find();
+    const paiements = await Payment.find(); // Utiliser la méthode `find` sur le modèle Payment
     return paiements;
   } catch (err) {
     console.error(err.message);
@@ -25,9 +24,9 @@ const getPaiements = async () => {
 };
 
 // Modifier un paiement
-const modifierPaiement = async (id, data) => {
+export const modifierPaiement = async (id, data) => {
   try {
-    const paiement = await Payment.findByIdAndUpdate(id, data, { new: true });
+    const paiement = await Payment.findByIdAndUpdate(id, data, { new: true }); // Mise à jour du paiement avec l'id donné
     if (!paiement) {
       throw new Error("Paiement non trouvé");
     }
@@ -39,9 +38,9 @@ const modifierPaiement = async (id, data) => {
 };
 
 // Supprimer un paiement
-const supprimerPaiement = async (id) => {
+export const supprimerPaiement = async (id) => {
   try {
-    const paiement = await Payment.findByIdAndDelete(id);
+    const paiement = await Payment.findByIdAndDelete(id); // Supprimer le paiement avec l'id donné
     if (!paiement) {
       throw new Error("Paiement non trouvé");
     }
@@ -50,11 +49,4 @@ const supprimerPaiement = async (id) => {
     console.error(err.message);
     throw new Error("Erreur du serveur lors de la suppression du paiement");
   }
-};
-
-export default {
-  ajouterPaiement,
-  getPaiements,
-  modifierPaiement,
-  supprimerPaiement,
 };

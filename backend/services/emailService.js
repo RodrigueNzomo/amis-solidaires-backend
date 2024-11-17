@@ -1,36 +1,33 @@
 // backend/services/emailService.js
 
-import { createTransport } from "nodemailer";
+import nodemailer from "nodemailer";
 
-// Configuration du transporteur pour Nodemailer (utilisation de Gmail ici comme exemple)
-const transporter = createTransport({
-  service: "gmail", // Utilisation de Gmail pour envoyer des emails
+// Configuration du transporteur pour l'envoi des emails
+const transporter = nodemailer.createTransport({
+  service: "gmail", // Utilisation de Gmail pour l'exemple, à modifier selon votre fournisseur
   auth: {
-    user: process.env.EMAIL_USER, // Doit être défini dans les variables d'environnement
-    pass: process.env.EMAIL_PASS, // Doit être défini dans les variables d'environnement
+    user: process.env.EMAIL_USER, // L'adresse email de l'expéditeur (doit être dans le fichier .env)
+    pass: process.env.EMAIL_PASS, // Le mot de passe ou le token pour l'authentification
   },
 });
 
 // Fonction pour envoyer un email
-const sendEmail = async (to, subject, text, html = "") => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER, // L'email d'expéditeur
-    to: to, // L'email du destinataire
-    subject: subject, // L'objet de l'email
-    text: text, // Le contenu en texte brut
-    html: html, // Le contenu en HTML (optionnel)
-  };
-
+const sendEmail = async (to, subject, text, html) => {
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email envoyé : " + info.response);
-    return info;
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_USER, // L'expéditeur de l'email
+      to, // Destinataire
+      subject, // Sujet
+      text, // Contenu en texte brut
+      html, // Contenu HTML (si nécessaire)
+    });
+
+    console.log("Message envoyé: %s", info.messageId);
+    return { success: true, message: "Email envoyé avec succès" };
   } catch (error) {
-    console.error("Erreur lors de l'envoi de l'email : " + error.message);
+    console.error("Erreur lors de l'envoi de l'email:", error);
     throw new Error("Erreur lors de l'envoi de l'email");
   }
 };
 
-export default {
-  sendEmail,
-};
+export { sendEmail };

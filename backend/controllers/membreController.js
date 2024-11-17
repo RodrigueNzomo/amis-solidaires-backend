@@ -1,9 +1,7 @@
-// backend/controllers/membreController.js
-
 import Membre from "../models/Membre.js"; // Import du modèle Membre
 
 // Ajouter un membre
-const ajouterMembre = async (data) => {
+export const ajouterMembre = async (data) => {
   try {
     const membre = new Membre(data); // Créer une instance du membre avec les données
     await membre.save(); // Sauvegarder le membre dans la base de données
@@ -15,7 +13,7 @@ const ajouterMembre = async (data) => {
 };
 
 // Récupérer tous les membres
-const getMembres = async () => {
+export const getMembres = async () => {
   try {
     const membres = await Membre.find(); // Utiliser la méthode `find` sur le modèle Membre
     return membres;
@@ -26,7 +24,7 @@ const getMembres = async () => {
 };
 
 // Modifier un membre
-const modifierMembre = async (id, data) => {
+export const modifierMembre = async (id, data) => {
   try {
     const membre = await Membre.findByIdAndUpdate(id, data, { new: true }); // Mise à jour du membre avec l'id donné
     if (!membre) {
@@ -42,7 +40,7 @@ const modifierMembre = async (id, data) => {
 };
 
 // Supprimer un membre
-const supprimerMembre = async (id) => {
+export const supprimerMembre = async (id) => {
   try {
     const membre = await Membre.findByIdAndDelete(id); // Supprimer le membre avec l'id donné
     if (!membre) {
@@ -55,11 +53,4 @@ const supprimerMembre = async (id) => {
     );
     throw new Error("Impossible de supprimer le membre, erreur du serveur");
   }
-};
-
-export default {
-  ajouterMembre,
-  getMembres,
-  modifierMembre,
-  supprimerMembre,
 };

@@ -8,50 +8,49 @@ const PretSchema = new Schema(
   {
     beneficiaire: {
       type: Schema.Types.ObjectId,
-      ref: "Membre",
-      required: [true, "Le bénéficiaire est requis"],
+      ref: "Membre", // Référence au modèle Membre
+      required: [true, "Le bénéficiaire est requis"], // Validation pour garantir que le bénéficiaire est spécifié
     },
     montant: {
       type: Number,
       required: [true, "Le montant du prêt est requis"],
-      min: [0, "Le montant doit être positif"],
+      min: [0, "Le montant doit être positif"], // Validation pour garantir un montant positif
     },
     interet: {
       type: Number,
       required: [true, "Le taux d'intérêt est requis"],
-      min: [0, "Le taux d'intérêt doit être positif"],
+      min: [0, "Le taux d'intérêt doit être positif"], // Validation pour garantir un taux d'intérêt positif
     },
     duree: {
       type: Number,
       required: [true, "La durée du prêt est requise"],
-      min: [1, "La durée doit être d'au moins 1 mois"],
+      min: [1, "La durée doit être d'au moins 1 mois"], // Validation pour garantir que la durée est positive
     },
     dateDebut: {
       type: Date,
-      default: Date.now,
+      default: Date.now, // Définit la date de début par défaut à la date actuelle
     },
     statut: {
       type: String,
-      enum: ["actif", "remboursé"],
-      default: "actif",
+      enum: ["actif", "remboursé"], // Validation pour s'assurer que le statut est valide
+      default: "actif", // Valeur par défaut
     },
   },
-  { timestamps: true }
+  { timestamps: true } // Ajout des champs createdAt et updatedAt automatiquement
 );
 
 // Méthode statique pour récupérer les prêts par bénéficiaire
 PretSchema.statics.findByBeneficiaire = function (beneficiaireId) {
-  return this.find({ beneficiaire: beneficiaireId });
+  return this.find({ beneficiaire: beneficiaireId }); // Recherche des prêts associés à un bénéficiaire spécifique
 };
 
 // Middleware de validation avant la sauvegarde
 PretSchema.pre("save", async function (next) {
   try {
-    // Appliquer la validation externe (assurez-vous que validatePretData est bien une fonction asynchrone)
-    await validatePretData(this); // Vérification des données avant de poursuivre
-    next(); // Continuer avec la sauvegarde si tout est valide
+    await validatePretData(this); // Appliquer la validation des données avant la sauvegarde
+    next(); // Si la validation passe, continuer avec la sauvegarde
   } catch (err) {
-    next(err); // Passer l'erreur au middleware d'erreur global si la validation échoue
+    next(err); // Si la validation échoue, arrêter et renvoyer l'erreur
   }
 });
 

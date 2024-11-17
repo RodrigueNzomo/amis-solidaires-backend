@@ -1,7 +1,7 @@
 import Pret from "../models/Pret.js"; // Import du modèle Pret
 
 // Ajouter un nouveau prêt
-const ajouterPret = async (pretData) => {
+export const ajouterPret = async (pretData) => {
   const { beneficiaire, montant, interet, duree } = pretData;
   if (!beneficiaire || !montant || !interet || !duree) {
     throw new Error("Données du prêt manquantes.");
@@ -17,7 +17,7 @@ const ajouterPret = async (pretData) => {
     });
 
     await pret.save();
-    return pret; // Retourner l'objet prêt ajouté
+    return pret; // Retourner le prêt ajouté
   } catch (err) {
     console.error(err.message);
     throw new Error("Erreur du serveur lors de l'ajout du prêt");
@@ -25,7 +25,7 @@ const ajouterPret = async (pretData) => {
 };
 
 // Récupérer tous les prêts
-const getPrets = async () => {
+export const getPrets = async () => {
   try {
     const prets = await Pret.find();
     return prets; // Retourner les prêts récupérés
@@ -36,7 +36,7 @@ const getPrets = async () => {
 };
 
 // Modifier un prêt
-const modifierPret = async (id, pretData) => {
+export const modifierPret = async (id, pretData) => {
   try {
     const pret = await Pret.findByIdAndUpdate(id, pretData, { new: true });
     if (!pret) {
@@ -50,7 +50,7 @@ const modifierPret = async (id, pretData) => {
 };
 
 // Supprimer un prêt
-const supprimerPret = async (id) => {
+export const supprimerPret = async (id) => {
   try {
     const pret = await Pret.findByIdAndDelete(id);
     if (!pret) {
@@ -62,6 +62,3 @@ const supprimerPret = async (id) => {
     throw new Error("Erreur du serveur lors de la suppression du prêt");
   }
 };
-
-// Exporter les fonctions
-export { ajouterPret, getPrets, modifierPret, supprimerPret };

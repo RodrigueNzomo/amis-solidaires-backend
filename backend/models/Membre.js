@@ -1,5 +1,3 @@
-// backend/models/Membre.js
-
 import mongoose from "mongoose";
 const { model, Schema } = mongoose;
 import { validateMembreData } from "../utils/validators.js"; // Importation correcte de la fonction de validation
@@ -22,8 +20,8 @@ const MembreSchema = new Schema(
     email: {
       type: String,
       required: [true, "L'email est requis"],
-      unique: true,
-      match: [/\S+@\S+\.\S+/, "L'email doit être valide"],
+      unique: true, // Assurer l'unicité de l'email
+      match: [/\S+@\S+\.\S+/, "L'email doit être valide"], // Validation regex pour l'email
       trim: true, // Retirer les espaces avant/après
     },
     adresse: {
@@ -58,22 +56,21 @@ const MembreSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true } // Ajout des timestamps pour createdAt et updatedAt
 );
 
 // Méthode statique pour récupérer les membres avec leurs cotisations
 MembreSchema.statics.findWithCotisations = function () {
-  return this.find().populate("cotisations");
+  return this.find().populate("cotisations"); // Remplissage des cotisations liées à chaque membre
 };
 
 // Middleware de validation avant la sauvegarde
 MembreSchema.pre("save", function (next) {
-  // Validation externe pour le membre
   try {
     validateMembreData(this); // Validation de l'objet membre
-    next(); // Continuer avec la sauvegarde
+    next(); // Si tout est valide, continuer avec la sauvegarde
   } catch (err) {
-    next(err); // Arrêter si validation échoue et passer l'erreur
+    next(err); // Si une erreur survient, elle est renvoyée
   }
 });
 

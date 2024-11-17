@@ -1,37 +1,37 @@
 import mongoose from "mongoose";
 const { model, Schema } = mongoose;
 
-import { validateCotisationData } from "../utils/validators.js"; // Import correct de la validation pour la cotisation
+import { validateCotisationData } from "../utils/validators.js"; // Importation correcte de la validation pour la cotisation
 
 // Schéma de la cotisation
 const CotisationSchema = new Schema(
   {
     membre: {
       type: Schema.Types.ObjectId,
-      ref: "Membre",
-      required: [true, "Le membre est requis"], // Message d'erreur personnalisé
+      ref: "Membre", // Référence au modèle Membre pour lier la cotisation à un membre
+      required: [true, "Le membre est requis"], // Validation obligatoire pour le membre
     },
     montant: {
       type: Number,
-      required: [true, "Le montant est requis"], // Message d'erreur personnalisé
+      required: [true, "Le montant est requis"], // Validation obligatoire pour le montant
       min: [0, "Le montant doit être positif"], // Validation pour garantir un montant positif
     },
     date: {
       type: Date,
-      default: Date.now,
+      default: Date.now, // Définit la date actuelle par défaut
     },
     statut: {
       type: String,
-      enum: ["payé", "en retard"],
+      enum: ["payé", "en retard"], // L'état de la cotisation, avec une valeur par défaut "payé"
       default: "payé",
     },
   },
-  { timestamps: true } // Ajout des timestamps (createdAt, updatedAt)
+  { timestamps: true } // Ajout des champs createdAt et updatedAt automatiquement
 );
 
 // Méthode statique pour récupérer les cotisations par membre
 CotisationSchema.statics.findByMembre = function (membreId) {
-  return this.find({ membre: membreId });
+  return this.find({ membre: membreId }); // Recherche toutes les cotisations associées à un membre spécifique
 };
 
 // Middleware Mongoose avant sauvegarde pour valider les données

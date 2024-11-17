@@ -1,10 +1,9 @@
-// backend/routes/userRoutes.js
 import { Router } from "express";
 import { getUserDetails, getAllUsers } from "../controllers/userController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js"; // Vérification de l'authentification
 
 import { validateIdParam } from "../utils/validators.js"; // Import de la validation de l'ID
-import { handleValidationErrors } from "../middleware/errorHandler.js"; // Import pour la gestion des erreurs de validation
+import { handleValidationErrors } from "../middleware/errorHandlerMiddleware.js"; // Import pour la gestion des erreurs de validation
 
 const router = Router();
 

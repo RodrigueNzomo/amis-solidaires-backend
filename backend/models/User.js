@@ -11,18 +11,18 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "Le nom est requis"],
-      minlength: [3, "Le nom doit contenir au moins 3 caractères"],
+      minlength: [3, "Le nom doit contenir au moins 3 caractères"], // Validation pour garantir une longueur minimale
     },
     email: {
       type: String,
       required: [true, "L'email est requis"],
-      unique: true,
-      match: [/\S+@\S+\.\S+/, "L'email doit être valide"],
+      unique: true, // Assurer l'unicité de l'email
+      match: [/\S+@\S+\.\S+/, "L'email doit être valide"], // Validation regex pour l'email
     },
     password: {
       type: String,
       required: [true, "Le mot de passe est requis"],
-      minlength: [6, "Le mot de passe doit contenir au moins 6 caractères"],
+      minlength: [6, "Le mot de passe doit contenir au moins 6 caractères"], // Validation pour garantir un mot de passe sécurisé
     },
   },
   { timestamps: true }
