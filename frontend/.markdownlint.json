@@ -1,0 +1,33 @@
+{
+  "default": true,
+  "MD001": true, // Les niveaux de titres doivent augmenter d'un niveau à la fois
+  "MD002": true, // Le premier titre doit être un titre h1
+  "MD003": { "style": "atx" }, // Les titres doivent utiliser le style atx (#)
+  "MD004": { "style": "consistent" }, // Le style des listes non ordonnées doit être cohérent
+  "MD005": true, // Indentation incohérente pour les éléments de liste au même niveau
+  "MD006": false, // Commencer les listes à puces au début de la ligne (désactivé)
+  "MD007": { "indent": 2 }, // L'indentation des listes doit être de 2 espaces
+  "MD009": { "br_spaces": 2 }, // Espaces de fin de ligne
+  "MD010": false, // Tabulations dures (désactivé)
+  "MD012": true, // Lignes vides consécutives multiples
+  "MD013": false, // Longueur de ligne (désactivé)
+  "MD014": false, // Symboles dollar utilisés avant les commandes sans afficher la sortie (désactivé)
+  "MD018": true, // Pas d'espace après le dièse dans un titre de style atx
+  "MD019": true, // Espaces multiples après le dièse dans un titre de style atx
+  "MD022": true, // Les titres doivent être entourés de lignes vides
+  "MD023": true, // Les titres doivent commencer au début de la ligne
+  "MD024": { "siblings_only": true }, // Titres multiples avec le même contenu
+  "MD025": { "level": 1 }, // Titres de niveau supérieur multiples dans le même document
+  "MD026": { "punctuation": ".,;:!" }, // Ponctuation à la fin des titres
+  "MD029": { "style": "ordered" }, // Préfixe des éléments de liste ordonnée
+  "MD030": true, // Espaces après les marqueurs de liste
+  "MD031": true, // Les blocs de code délimités doivent être entourés de lignes vides
+  "MD032": true, // Les listes doivent être entourées de lignes vides
+  "MD033": false, // HTML en ligne (désactivé)
+  "MD036": true, // Utilisation de l'emphase au lieu d'un titre
+  "MD037": true, // Espaces à l'intérieur des marqueurs d'emphase
+  "MD038": true, // Espaces à l'intérieur des éléments de code en ligne
+  "MD040": true, // Les blocs de code délimités doivent spécifier un langage
+  "MD041": true, // La première ligne d'un fichier doit être un titre de niveau supérieur
+  "MD046": { "style": "fenced" } // Style des blocs de code
+}
